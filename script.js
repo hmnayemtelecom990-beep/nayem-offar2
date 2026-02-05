@@ -147,11 +147,9 @@ function confirmOrder() {
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
 
-    // 'allOrders' কেটে শুধু 'orders' লিখে দিন
-database.ref('allOrders').push(orderData).then(() => {
-    showSmartToast("অর্ডার সফল! হিস্ট্রি চেক করুন।", "✅");
-    closeOrder();
-
+    database.ref('allOrders').push(orderData).then(() => {
+        showSmartToast("অর্ডার সফল! হিস্ট্রি চেক করুন।", "✅");
+        closeOrder();
         document.getElementById('custNumber').value = "";
         document.getElementById('trxId').value = "";
     }).catch(e => { showSmartToast("ব্যর্থ হয়েছে!", "❌", true); });
