@@ -91,7 +91,7 @@ function loadUserOrders(uid) {
     const orderList = document.getElementById('orderStatusList');
     if(!orderDiv || !orderList) return;
 
-    database.ref('Orders').orderByChild('userUid').equalTo(uid).on('value', snap => {
+    database.ref('allOrders').orderByChild('userUid').equalTo(uid).on('value', snap => {
         if (snap.exists()) {
             orderDiv.style.display = 'block';
             orderList.innerHTML = ""; // আগের ডাটা মুছে ফ্রেশ করে দেখানোর জন্য
@@ -148,7 +148,7 @@ function confirmOrder() {
     };
 
     // 'allOrders' কেটে শুধু 'orders' লিখে দিন
-database.ref('orders').push(orderData).then(() => {
+database.ref('allOrders').push(orderData).then(() => {
     showSmartToast("অর্ডার সফল! হিস্ট্রি চেক করুন।", "✅");
     closeOrder();
 
