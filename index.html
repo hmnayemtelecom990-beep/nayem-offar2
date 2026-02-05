@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium SIM Offer App</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+</head>
+<body>
+
+<div style="display:none;">
+  <audio id="snd_sim" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr1.mp3"></audio>
+  <audio id="snd_back"src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr2.mp3"></audio>
+  <audio id="snd_day" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr3.mp3"></audio>
+  <audio id="snd_set" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr4.mp3"></audio>
+  <audio id="snd_buy" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr5.mp3"></audio>
+</div>
+
+<header class="header-content">
+  <div class="logo-title-group">
+    <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/logo.png" alt="Logo" class="header-logo">
+    <h2 id="headerTitle">কম দামে সেরা অফার</h2>
+  </div>
+  <button class="settings-icon" onclick="toggleModal()">♻️</button>
+</header>
+
+<section id="homeSection">
+  <div class="video-container">
+    <div class="video-card" style="position: relative;">
+      <video id="tutorialVideo" controls style="width:100%; height:100%; object-fit: cover; border-radius: 15px;">
+        <source src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mr1.mp4" type="video/mp4">
+        আপনার ফোন এই ভিডিও সাপোর্ট করছে না।
+      </video>
+
+      <div id="floatingGuide" class="floating-guide-wrapper" style="position: fixed; right: 20px; top: 180px; display: flex; align-items: center; pointer-events: none; z-index: 999;">
+        <span class="guide-text-anim">অর্ডার গাইড দেখুন</span>
+        <div class="guide-icon-btn" onclick="openFullGuide()" style="pointer-events: auto; background: rgba(0, 255, 255, 0.8); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid white; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,255,0.6);">
+          <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/gaid.png" style="width: 45px; height: 45px;">
+        </div>
+      </div>
+    </div>
+    <p class="video-label">📺 অফার কেনার নিয়ম ভিডিওতে দেখুন</p>
+  </div>
+
+  <div id="noticeContainer" style="display: none; margin: 0 20px 10px 20px; background: linear-gradient(90deg, #ff0055, #ff9900); border-radius: 10px; overflow: hidden; border: 1px solid #fff;">
+    <marquee id="dynamicNotice" scrollamount="5" style="color: white; padding: 8px; font-weight: bold; font-family: 'BodyFont';"></marquee>
+  </div>
+
+  <div id="dhakaOfferSection" style="display: none; margin: 0 20px 15px 20px; background: rgba(255, 255, 255, 0.05); border: 2px solid #00f2fe; border-radius: 15px; padding: 15px; text-align: center; backdrop-filter: blur(10px);">
+    <div style="color: #ff0055; font-weight: bold; font-size: 18px; margin-bottom: 8px;">⚡ ধামাকা অফার ⚡</div>
+    <p id="dhakaOfferText" style="color: #fff; margin: 0 0 15px 0; font-size: 14px; line-height: 1.4;">অফার লোড হচ্ছে...</p>
+    <button class="buy-now-btn" onclick="openDhakaOrder()" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #000; border: none; padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);">🛒 এখনই কিনুন</button>
+  </div>
+
+  <div class="sim-container">
+    <div class="sim-card gp-theme" onclick="openOffers('Grameenphone')">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/gp.png" alt="GP" class="op-logo">
+      <span class="sim-name">Grameenphone</span>
+    </div>
+    <div class="sim-card robi-theme" onclick="openOffers('Robi')">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/rb.png" alt="Robi" class="op-logo">
+      <span class="sim-name">Robi</span>
+    </div>
+    <div class="sim-card bl-theme" onclick="openOffers('Banglalink')">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/bl.png" alt="BL" class="op-logo">
+      <span class="sim-name">Banglalink</span>
+    </div>
+    <div class="sim-card airtel-theme" onclick="openOffers('Airtel')">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/ar.png" alt="Airtel" class="op-logo">
+      <span class="sim-name">Airtel</span>
+    </div>
+    <div class="sim-card teletalk-theme" onclick="openOffers('Teletalk')">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/tl.png" alt="TT" class="op-logo">
+      <span class="sim-name">Teletalk</span>
+    </div>
+    <div class="sim-card skitto-theme" onclick="openOffers('Skitto')">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/sk.png" alt="SK" class="op-logo">
+      <span class="sim-name">Skitto</span>
+    </div>
+  </div>
+  <div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
+    <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
+    <div id="orderStatusList" style="max-height: 300px; overflow-y: auto;">
+        <p style="color: #777; font-size: 12px; text-align: center;">অর্ডার লোড হচ্ছে...</p>
+    </div>
+</div>
+
+</section>
+
+<div id="fullGuidePage" class="modal hidden" style="background: #000; z-index: 20000;">
+  <div class="modal-content" style="width: 100%; height: 100%; max-width: none; border-radius: 0; padding: 0; overflow-y: auto;">
+    <div style="position: sticky; top: 0; background: #161b22; padding: 15px; border-bottom: 1px solid #00ffff; display: flex; justify-content: space-between; align-items: center; z-index: 21000;">
+      <h3 style="color: #00ffff; margin: 0;">অর্ডার করার গাইড</h3>
+      <button onclick="closeFullGuide()" style="background: #ff0055; color: white; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold;">বন্ধ করুন</button>
+    </div>
+    <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 15px; border-radius: 12px; margin: 15px auto; width: 85%; max-width: 400px; text-align: center; font-family: 'mr2.1', sans-serif !important; box-sizing: border-box;">
+        <p id="paymentNum" style="color:#00ff88; font-size:18px; font-weight: bold; margin: 5px 0;">01609950083</p>
+        <button onclick="copyNumber(event)" style="background: #3bff00; border-bottom: 3px solid #ff0049; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
+    </div>
+    <div style="padding: 15px;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap1.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap2.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap3.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap4.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap5.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap6.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap7.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap8.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+    </div>
+  </div>
+</div>
+
+<section id="offerSection" class="hidden container">
+  <button class="back-btn" onclick="goBack()">← ফিরে যান</button>
+  <div class="days-btn">
+    <button onclick="loadOffers(7)">৭ দিন</button>
+    <button onclick="loadOffers(15)">১৫ দিন</button>
+    <button onclick="loadOffers(30)">৩০ দিন</button>
+  </div>
+  <div id="offerList"></div>
+</section>
+
+<div id="settingsModal" class="modal hidden">   
+  <div class="modal-content">
+      <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
+          
+          <div id="userProfileCard" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid rgba(0, 242, 254, 0.3); display: flex; align-items: center; gap: 12px;">
+    
+    <div id="userPhoto" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe, #4facfe); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #000; font-weight: bold;">
+        U
+    </div>
+    <div style="flex: 1;">
+        <h3 id="userNameDisplay" style="margin: 0; color: #fff; font-size: 16px;">নতুন ইউজার</h3>
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 3px;">
+            <p style="margin: 0; color: #00f2fe; font-size: 13px; font-weight: bold;">
+                ID: <span id="userIdDisplay">লোড হচ্ছে...</span>
+            </p>
+            <button onclick="copyUserId()" style="background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; color: #00f2fe; font-size: 10px; padding: 2px 6px; border-radius: 5px; cursor: pointer;">
+                কপি
+            </button>
+        </div>
+       </div>
+    <div style="background: #28a745; color: #fff; font-size: 9px; padding: 3px 8px; border-radius: 10px; font-weight: bold;">
+        ACTIVE
+    </div>
+</div>
+<div id="authSection" style="margin-bottom: 15px; text-align: center;">
+    <button id="loginBtn" onclick="googleLogin()" style="background: white; color: black; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; margin: 0 auto;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> জিমেইল দিয়ে লগইন করুন
+    </button>
+    <button id="logoutBtn" onclick="googleLogout()" style="background: #ff4b2b; color: white; border: none; padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; display: none; margin: 0 auto;">লগআউট করুন</button>
+</div>
+
+        <div style="border: 1px solid #00ffff; padding: 5px 15px; border-radius: 50px; font-size: 14px; color: white;">ভার্সনঃ ১.০.০</div>
+        <button class="close-btn" onclick="toggleModal()">❌হোম পেজ এ যান❌</button>
+      </div>
+      <div class="about-section" style="text-align: center;">
+          <h2 style="color:#ff000a; font-size: 18px; border-bottom: 2px solid #50ff00; display: inline-block;">👨‍💻 ডেভেলপার 👨‍💻</h2>
+          <h4 style="color: white;">MR.MOSTAFIZUR & NAYEM VAI</h4>
+          <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 1px solid #333; margin-bottom: 15px;">
+        <p style="font-size: 14px; color: #eee; line-height: 1.5; margin: 0;">আসসালামু আলাইকুম। আমি একজন জুনিয়র অ্যাপ ডেভেলপার। আমি আমার সর্বাত্মক প্রচেষ্টায় আপনাদের জন্য এই অ্যাপটি তৈরি করেছি। যদি কোথাও কোন সমস্যা থাকে অথবা পরামর্শ থাকে তবে অবশ্যই জানাবেন। আমরা আপনাদের আইডিয়া নিয়ে কাজ করতে আগ্রহী।</p>
+      </div>
+          
+          <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 15px 0;">
+              <a href="https://wa.me/8801609950083" target="_blank"><img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/wa.png" style="width: 35px;"></a>
+              <a href="https://t.me/mrmostafizurr" target="_blank"><img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/tg.png" style="width: 35px;"></a>
+          </div>
+      </div>
+      <button class="close-btn" onclick="toggleModal()">❌হোম পেজ এ যান❌</button>
+  </div>
+</div>
+
+<div id="orderModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
+    <div class="order-modal-content" style="background:#161b22; padding:20px; border-radius:15px; border:2px solid #00f2fe; width:85%; max-width:320px; text-align:center; max-height: 85vh; overflow-y: auto;">
+        <h3 style="color:#00ffff; margin-bottom:10px;">পেমেন্ট ডিটেইলস</h3>
+        <div id="displayOfferDetails" style="background: #0d1117; padding: 10px; border-radius: 8px; border: 1px dashed #50ff00; margin-bottom: 15px;">
+            <p id="offNameText" style="color: white; margin: 0; font-size: 14px; font-weight: bold;">অফার লোড হচ্ছে...</p>
+            <p id="offPriceText" style="color: #50ff00; margin: 5px 0 0 0; font-size: 16px; font-weight: bold;">দামঃ ৳ ০.০০</p>
+        </div>
+        
+        <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
+            <h4 style="color: #ffa500; margin: 0 0 5px 0; font-size: 14px;">⚠️ নির্দেশনাঃ</h4>
+            <ul style="color: #eee; font-size: 12px; margin: 0; padding-left: 18px; line-height: 1.5;">
+                <li>📳বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন</li>
+                <li>✔️TrxID টি কপি করে নিচের বক্সে দিন</li>
+                <li>✔️৮ থেকে ১০ ঘন্টার ভিতরে অফার পাবেন ইনশাআল্লাহ</li>
+            </ul>
+        </div>
+
+        <div style="background: #21262d; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+            <p id="paymentNumDisplay" style="color:#00ff88; font-size:18px; font-weight: bold; margin: 5px 0;">01609950083</p>
+            <button onclick="copyNumber(event)" style="background: #50ff00; border: none; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
+        </div>
+        
+        <input type="number" id="custNumber" placeholder="যে নাম্বারে অফার যাবে" style="width:90%; padding:12px; margin-bottom:12px; border-radius:8px; border:1px solid #333; background:#0d1117; color:white;">
+        <select id="payMethod" style="width:97%; padding:12px; margin-bottom:12px; border-radius:8px; background:#0d1117; color:white; border:1px solid #333;">
+            <option value="Bkash">বিকাশ</option>
+            <option value="Rocket">রকেট</option>
+            <option value="Nagad">নগদ</option>
+        </select>
+        <input type="text" id="trxId" placeholder="TrxID (টাকা পাঠানোর পর)" style="width:90%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #333; background:#0d1117; color:white;">
+        
+        <div style="display:flex; gap:10px;">
+            <button onclick="closeOrder()" style="flex:1; padding:12px; background:#444; color:white; border:none; border-radius:8px;">বাতিল</button>
+            <button onclick="confirmOrder()" style="flex:1; padding:12px; background:#00ffff; color:#000; border:none; border-radius:8px;">অর্ডার দিন</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<div id="smartToast" class="smart-toast">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">কপি করা হয়েছে!</span>
+</div>
+
+</body>
+</html>

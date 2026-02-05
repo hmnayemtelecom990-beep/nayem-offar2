@@ -1,0 +1,180 @@
+/* =========================================================
+   ১. ফন্ট রেজিস্ট্রেশন ও গ্লোবাল ডার্ক মোড
+============================================================ */
+@font-face { font-family: 'HeaderFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr2.ttf') format('truetype'); }
+@font-face { font-family: 'BodyFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr2.ttf') format('truetype'); }
+@font-face { font-family: 'PriceFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr3.ttf') format('truetype'); }
+@font-face { font-family: 'ButtonFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr4.ttf') format('truetype'); }
+
+body { 
+  margin: 0; 
+  font-family: "BodyFont", sans-serif; 
+  background-color: #0b0e11; 
+  color: white; 
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   ২. হেডার ডিজাইন
+============================================================ */
+header {
+  background: linear-gradient(135deg, #1c2128, #0b0e11);
+  padding: 10px 15px; 
+  position: sticky; 
+  top: 0; 
+  z-index: 100; 
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+}
+
+.logo-title-group { display: flex; align-items: center; gap: 15px; }
+.header-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+#headerTitle { font-family: 'HeaderFont', sans-serif; font-size: 18px; font-weight: bold; margin: 0; }
+
+.settings-icon { 
+  position: absolute; 
+  right: 15px; 
+  background: none; 
+  border: none; 
+  color: #00ff88; 
+  font-size: 25px; 
+  cursor: pointer; 
+}
+
+/* =========================================================
+   ৩. ভিডিও এবং নোটিশ সেকশন
+============================================================ */
+.video-container { padding: 15px 20px 5px 20px; background: #0b0e11; }
+.video-card { position: relative; width: 100%; padding-top: 56.25%; border-radius: 15px; overflow: hidden; border: 2px solid #7aff00; }
+.video-card video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.video-label { text-align: center; font-size: 13px; color: #00ff88; margin-top: 8px; font-weight: bold; }
+
+/* ধামাকা অফার নোটিশ */
+#noticeContainer {
+  margin: 10px 20px;
+  background: linear-gradient(90deg, #ff0055, #ff9900);
+  border-radius: 10px;
+  border: 1px solid #fff;
+}
+
+/* =========================================================
+   ৪. সিম কার্ড ডিজাইন
+============================================================ */
+.sim-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+.sim-card {
+  min-height: 150px; border-radius: 20px; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 4px; overflow: hidden; transition: 0.3s; cursor: pointer;
+}
+.sim-card::after {
+  content: ""; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+  background-color: #12171d; border-radius: 16px; z-index: 1;
+}
+.op-logo, .sim-name { position: relative; z-index: 2; }
+.op-logo { width: 55px; height: 55px; background: white; border-radius: 50%; padding: 5px; margin-bottom: 8px; }
+.sim-name { font-family: 'HeaderFont', sans-serif; font-weight: bold; font-size: 15px; }
+
+/* সিম থিম কালার */
+.gp-theme { background: linear-gradient(45deg, #0056b3, #00c6ff); }
+.robi-theme { background: linear-gradient(45deg, #e21313, #ff4b2b); }
+.bl-theme { background: linear-gradient(45deg, #ff6600, #ff9f43); }
+.airtel-theme { background: linear-gradient(45deg, #ed1c24, #ff5252); }
+.teletalk-theme { background: linear-gradient(45deg, #28a745, #55efc4); }
+.skitto-theme { background: linear-gradient(45deg, #ffd400, #ffeaa7); }
+
+/* =========================================================
+   ৫. অফার এবং বাটন ইফেক্ট
+============================================================ */
+.container { padding: 15px; }
+.back-btn { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; border: none; padding: 8px 18px; border-radius: 50px; margin-bottom: 20px; cursor: pointer; }
+
+.days-btn { display: flex; gap: 10px; margin-bottom: 25px; }
+.days-btn button { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: bold; color: white; background: linear-gradient(135deg, #11998e, #38ef7d); cursor: pointer; }
+
+.offer-card { background: #1c2128; padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #00ff88; }
+.offer-card button { background: orange; border: none; padding: 10px 20px; border-radius: 20px; color: white; font-weight: bold; cursor: pointer; }
+
+/* =========================================================
+   ৬. ভাসমান গাইড বাটন এবং এনিমেশন
+============================================================ */
+.guide-text-anim {
+  font-size: 12px; color: white; background: rgba(0, 0, 0, 0.7);
+  padding: 4px 10px; border-radius: 10px; margin-right: 8px; opacity: 0; animation: textFadeCycle 8s infinite;
+}
+
+@keyframes textFadeCycle {
+  0% { opacity: 0; transform: translateX(10px); }
+  10% { opacity: 1; transform: translateX(0); }
+  60% { opacity: 1; transform: translateX(0); }
+  70% { opacity: 0; transform: translateX(10px); }
+  100% { opacity: 0; }
+}
+
+.guide-icon-btn { animation: pulseBtn 2s infinite; }
+@keyframes pulseBtn {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0, 255, 255, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+}
+
+/* =========================================================
+   ৭. মডাল ডিজাইন (Settings, Order, Guide)
+============================================================ */
+.modal, .modal-overlay { position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; }
+.modal-content, .order-modal-content { background: #1c2128; padding: 25px; border-radius: 25px; width: 85%; max-width: 320px; max-height: 85vh; overflow-y: auto; border: 1px solid #444; text-align: center; }
+
+.hidden { display: none !important; }
+/* সেটিংস মডালের হোম পেজ বাটনটিকে গোল এবং লাল করার কোড */
+.close-btn {
+  width: 85% !important; 
+  max-width: 220px; 
+  margin: 20px auto !important;
+  display: block; 
+  padding: 12px;
+  background: linear-gradient(135deg, #171520 0%, #171520 100%) !important;
+  color: #00ffff !important; 
+  border: 2px solid #3bff00 !important;
+  border-radius: 50px !important; /* বাটনটি গোল করার জন্য */
+  font-weight: bold; 
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(255, 0, 85, 0.3); /* হালকা গ্লো ইফেক্ট */
+  transition: 0.3s;
+}
+
+.close-btn:active {
+  transform: scale(0.9); /* ক্লিক করলে হালকা ডেবে যাবে */
+}
+
+
+/* নোটিফিকেশন ডিজাইন ও এনিমেশন */
+.smart-toast {
+    position: fixed;
+    top: -100px; /* শুরুতে স্ক্রিনের বাইরে থাকবে */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: 1px solid #00f2fe;
+    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 99999;
+    transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    font-weight: bold;
+}
+
+/* যখন show ক্লাস যোগ হবে তখন নিচে নামবে */
+.smart-toast.show {
+    top: 30px;
+}
+
+/* ভুল হলে লাল বর্ডার */
+.smart-toast.error {
+    border-color: #ff4b2b;
+    box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+}
