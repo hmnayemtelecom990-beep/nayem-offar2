@@ -1,5 +1,5 @@
 /* =========================================================
-   🔒 Premium User App Script - Updated with Block & User DB
+   🔒 Premium User App Script - Fully Updated & Sync with Admin
 ============================================================ */
 
 var firebaseConfig = {
@@ -16,12 +16,12 @@ var firebaseConfig = {
 // Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+    if (typeof firebase.analytics === "function") firebase.analytics();
 }
 var database = firebase.database();
 
 /* =========================================================
-   👤 জিমেইল লগইন, আইডি জেনারেশন ও ব্লক চেক
+   👤 জিমেইল লগইন ও ইউজার ডাটা ম্যানেজমেন্ট
 ============================================================ */
 firebase.auth().onAuthStateChanged((user) => {
     const loginBtn = document.getElementById('loginBtn');
@@ -31,27 +31,27 @@ firebase.auth().onAuthStateChanged((user) => {
     const idDisplay = document.getElementById('userIdDisplay');
 
     if (user) {
-        // --- 🚫 ১. ব্লক চেক লজিক ---
+        // --- 🚫 ১. ব্লক চেক ---
         database.ref('users/' + user.uid + '/isBlocked').on('value', snap => {
             if (snap.val() === true) {
                 document.body.innerHTML = `
                 <div style="height:100vh; background:#000; color:#ff4b2b; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; font-family:sans-serif;">
                     <h1 style="font-size:50px; margin-bottom:10px;">🚫</h1>
                     <h2>দুঃখিত! আপনাকে ব্লক করা হয়েছে।</h2>
-                    <p style="color:#777;">আমাদের নীতি লঙ্ঘনের কারণে আপনার অ্যাকাউন্টটি স্থগিত করা হয়েছে। বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।</p>
+                    <p style="color:#777;">অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
                     <a href="https://wa.me/8801609950083" style="margin-top:20px; color:#00f2fe; text-decoration:none; border:1px solid #00f2fe; padding:10px 20px; border-radius:5px;">যোগাযোগ করুন</a>
                 </div>`;
                 return;
             }
         });
 
-        // প্রোফাইল ডিসপ্লে
+        // প্রোফাইল সেটআপ
         if(loginBtn) loginBtn.style.display = 'none';
         if(logoutBtn) logoutBtn.style.display = 'block';
         if(userNameDisplay) userNameDisplay.innerText = user.displayName;
         if(userPhoto) userPhoto.innerHTML = `<img src="${user.photoURL}" style="width:100%; height:100%; border-radius:50%;">`;
 
-        // সংখ্যা দিয়ে ইউনিক আইডি (১০ ডিজিট)
+        // ইউনিক আইডি
         let numId = user.uid.replace(/\D/g, ''); 
         while (numId.length < 10) { numId += Math.floor(Math.random() * 10); }
         let finalCustomerId = numId.substring(0, 10);
@@ -59,45 +59,42 @@ firebase.auth().onAuthStateChanged((user) => {
         if (idDisplay) idDisplay.innerText = finalCustomerId;
         localStorage.setItem('customerID', finalCustomerId);
 
-        // --- 👥 ২. এডমিন প্যানেলের জন্য ইউজার ডাটা সেভ/আপডেট ---
-        let userData = {
+        // অ্যাডমিন প্যানেলের জন্য ডাটা আপডেট
+        database.ref('users/' + user.uid).update({
             uid: user.uid,
             customerId: finalCustomerId,
             name: user.displayName,
             email: user.email,
             photo: user.photoURL,
             lastLogin: new Date().toLocaleString('bn-BD'),
-            status: "Active" // ডিফল্ট স্ট্যাটাস
-        };
-        database.ref('users/' + user.uid).update(userData);
+            status: "Active"
+        });
 
-        // অর্ডার হিস্ট্রি লোড
+        // অর্ডার হিস্ট্রি লোড (অ্যাডমিনের সাথে মিল রেখে allOrders ব্যবহার)
         loadUserOrders(user.uid);
 
     } else {
-        // লগইন না থাকলে (গেস্ট মোড)
         if(loginBtn) loginBtn.style.display = 'flex';
         if(logoutBtn) logoutBtn.style.display = 'none';
         if(userNameDisplay) userNameDisplay.innerText = "গেস্ট ইউজার";
         if(userPhoto) userPhoto.innerHTML = "U";
         if (idDisplay) idDisplay.innerText = "লগইন করুন";
         localStorage.removeItem('customerID');
-        if(document.getElementById('userOrderSection')) document.getElementById('userOrderSection').style.display = 'none';
     }
 });
 
 /* =========================================================
-   📊 রিয়েল-টাইম অর্ডার হিস্ট্রি লোড
+   📊 রিয়েল-টাইম অর্ডার হিস্ট্রি (অ্যাডমিন প্যানেল সিঙ্ক)
 ============================================================ */
 function loadUserOrders(uid) {
     const orderDiv = document.getElementById('userOrderSection');
     const orderList = document.getElementById('orderStatusList');
     if(!orderDiv || !orderList) return;
 
-    database.ref('orders').orderByChild('userUid').equalTo(uid).on('value', snap => {
+    database.ref('allOrders').orderByChild('userUid').equalTo(uid).on('value', snap => {
         if (snap.exists()) {
             orderDiv.style.display = 'block';
-            orderList.innerHTML = "";
+            orderList.innerHTML = ""; // আগের ডাটা মুছে ফ্রেশ করে দেখানোর জন্য
             let orders = [];
             snap.forEach(child => { orders.unshift(child.val()); });
 
@@ -109,11 +106,11 @@ function loadUserOrders(uid) {
                 orderList.innerHTML += `
                     <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid ${statusColor}; border-bottom: 1px solid #333;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <strong style="color: white; font-size: 13px;">${o.offerName}</strong>
-                            <span style="color: ${statusColor}; font-size: 10px; font-weight: bold; text-transform: uppercase;">● ${o.status}</span>
+                            <strong style="color: white; font-size: 13px;">${o.title || 'অফার'}</strong>
+                            <span style="color: ${statusColor}; font-size: 10px; font-weight: bold;">● ${o.status}</span>
                         </div>
                         <div style="color: #aaa; font-size: 11px; margin-top: 5px;">
-                            নাম্বার: ${o.targetNumber} | ৳${o.price} | ${o.orderTime}
+                            নাম্বার: ${o.customerNumber} | ৳${o.price} | ${o.time}
                         </div>
                     </div>`;
             });
@@ -122,7 +119,7 @@ function loadUserOrders(uid) {
 }
 
 /* =========================================================
-   🛒 অর্ডার কনফার্মেশন
+   🛒 অর্ডার কনফার্মেশন (১০০% অ্যাডমিন সিঙ্ক)
 ============================================================ */
 function confirmOrder() {
   let num = document.getElementById('custNumber').value;
@@ -131,25 +128,26 @@ function confirmOrder() {
   let myID = localStorage.getItem('customerID') || "N/A";
   let user = firebase.auth().currentUser;
   
-  if (!user) { showSmartToast("আগে লগইন করুন!", "⚠️", true); toggleModal(); return; }
+  if (!user) { showSmartToast("আগে লগইন করুন!", "⚠️", true); return; }
 
   if (num.length >= 11 && trx.length >= 8) {
     showSmartToast("অর্ডার পাঠানো হচ্ছে...", "⏳");
+    
     let orderData = {
         userUid: user.uid,
-        customerId: myID,
-        customerName: user.displayName,
-        offerName: tempTitle,
-        price: tempPrice,
-        validity: currentDays,
-        targetNumber: num,
-        paymentMethod: met,
-        transactionId: trx,
+        userId: myID,
+        userPhoto: user.photoURL,
+        title: tempTitle, // অ্যাডমিন প্যানেলে অফারের নাম দেখাবে
+        price: tempPrice, // অ্যাডমিন প্যানেলে দাম দেখাবে
+        customerNumber: num,
+        method: met,
+        trxId: trx,
         status: "Pending", 
-        orderTime: new Date().toLocaleString('bn-BD'),
+        time: new Date().toLocaleString('bn-BD'), // অ্যাডমিনের সাথে টাইম ফরম্যাট সিঙ্ক
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    database.ref('orders').push(orderData).then(() => {
+
+    database.ref('allOrders').push(orderData).then(() => {
         showSmartToast("অর্ডার সফল! হিস্ট্রি চেক করুন।", "✅");
         closeOrder();
         document.getElementById('custNumber').value = "";
@@ -158,8 +156,9 @@ function confirmOrder() {
   } else { showSmartToast("সঠিক তথ্য দিন!", "❌", true); }
 }
 
+
 /* =========================================================
-   📱 সাধারণ ফাংশনসমূহ (সাউন্ড, টোস্ট, অফার)
+   📱 ফাংশনসমূহ (রিফ্রেশ ফিক্স সহ)
 ============================================================ */
 let currentSim = ""; let tempTitle = ""; let tempPrice = ""; let currentDays = "";
 function playSnd(id) { const s = document.getElementById(id); if (s) { s.currentTime = 0; s.play().catch(e => {}); } }
@@ -175,7 +174,7 @@ function showSmartToast(message, icon = "✅", isError = false) {
     setTimeout(() => { toast.classList.remove('show'); }, 2500);
 }
 
-// ধামাকা অফার লোডিং
+// ধামাকা অফার
 let globalDhakaOffer = null;
 database.ref('dhakaOffer').on('value', snap => {
     const dhakaBox = document.getElementById('dhakaOfferSection');
@@ -183,24 +182,47 @@ database.ref('dhakaOffer').on('value', snap => {
     if(snap.exists() && snap.val().text) {
         globalDhakaOffer = snap.val();
         dhakaText.innerHTML = `<div style="font-weight: bold; color: white;">${globalDhakaOffer.text}</div><div style="font-size: 12px; color: #00f2fe;">৳${globalDhakaOffer.price} | ${globalDhakaOffer.days} দিন</div>`;
-        dhakaBox.style.display = 'block'; 
+        if(dhakaBox) dhakaBox.style.display = 'block'; 
     } else { if(dhakaBox) dhakaBox.style.display = 'none'; }
 });
 
 function openDhakaOrder() { if (globalDhakaOffer) { currentDays = globalDhakaOffer.days; order("⚡ " + globalDhakaOffer.text, globalDhakaOffer.price); } }
 
-function openOffers(sim) { playSnd('snd_sim'); currentSim = sim; document.getElementById("homeSection").classList.add("hidden"); document.getElementById("offerSection").classList.remove("hidden"); document.getElementById("headerTitle").innerText = sim + " Offers"; }
+function openOffers(sim) { 
+    playSnd('snd_sim'); 
+    currentSim = sim; 
+    document.getElementById("homeSection").classList.add("hidden"); 
+    document.getElementById("offerSection").classList.remove("hidden"); 
+    document.getElementById("headerTitle").innerText = sim + " Offers";
+    // সিম পরিবর্তনের সময় লিস্ট ক্লিয়ার করার জন্য
+    document.getElementById("offerList").innerHTML = "";
+}
 
 function loadOffers(days) {
-  playSnd('snd_day'); currentDays = days;
+  playSnd('snd_day'); 
+  currentDays = days;
   const list = document.getElementById("offerList");
+
+  // ১. রিফ্রেশ ফিক্স: আগের ডাটা মুছে ফেলার জন্য
   list.innerHTML = '<p style="text-align:center; color:#00f2fe; padding:20px;">অফার লোড হচ্ছে...</p>';
+  
   database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
-    list.innerHTML = "";
-    if (!snap.exists()) { list.innerHTML = '<p style="text-align:center; color:#ff4b2b; padding:20px;">দুঃখিত, নেই।</p>'; return; }
+    list.innerHTML = ""; // ২. ডাটা আসার পর আবার ক্লিয়ার করে ফ্রেশ ডাটা বসানো
+    if (!snap.exists()) { 
+        list.innerHTML = '<p style="text-align:center; color:#ff4b2b; padding:20px;">দুঃখিত, কোনো অফার নেই।</p>'; 
+        return; 
+    }
     snap.forEach(child => {
       let o = child.val();
-      list.innerHTML += `<div class="offer-card" style="background:#1e1e1e; margin-bottom:12px; padding:15px; border-radius:12px; display:flex; align-items:center; border:1px solid #333;"><div style="flex: 1;"><h4 style="margin:0; color:white;">${o.title}</h4><p style="margin:5px 0; font-size:12px; color:#ff4b2b;">দোকান: <del>৳${o.dokanPrice || '0'}</del></p><p style="color:#00f2fe; font-weight:bold; font-size:18px;">৳${o.price}</p></div><button onclick="order('${o.title.replace(/'/g, "\\'")}', '${o.price}')" style="background:linear-gradient(135deg, #00f2fe, #4facfe); color:#000; border:none; padding:10px 15px; border-radius:20px; font-weight:bold;">কিনুন</button></div>`;
+      list.innerHTML += `
+        <div class="offer-card" style="background:#1e1e1e; margin-bottom:12px; padding:15px; border-radius:12px; display:flex; align-items:center; border:1px solid #333;">
+            <div style="flex: 1;">
+                <h4 style="margin:0; color:white;">${o.title}</h4>
+                <p style="margin:5px 0; font-size:12px; color:#ff4b2b;">দোকান: <del>৳${o.dokanPrice || '0'}</del></p>
+                <p style="color:#00f2fe; font-weight:bold; font-size:18px;">৳${o.price}</p>
+            </div>
+            <button onclick="order('${o.title.replace(/'/g, "\\'")}', '${o.price}')" style="background:linear-gradient(135deg, #00f2fe, #4facfe); color:#000; border:none; padding:10px 15px; border-radius:20px; font-weight:bold;">কিনুন</button>
+        </div>`;
     });
   });
 }
@@ -218,10 +240,10 @@ function order(title, price) {
 
 function closeOrder() { playSnd('snd_back'); document.getElementById('orderModal').style.display = 'none'; }
 function copyNumber() { let num = document.getElementById('paymentNumDisplay').innerText; navigator.clipboard.writeText(num).then(() => { playSnd('snd_set'); showSmartToast("কপি হয়েছে!", "📱"); }); }
-function copyUserId() { const id = document.getElementById('userIdDisplay').innerText; if(id === "লগইন করুন") return; navigator.clipboard.writeText(id).then(() => { playSnd('snd_set'); showSmartToast("আইডি কপি হয়েছে!", "🆔"); }); }
+function copyUserId() { const id = document.getElementById('userIdDisplay').innerText; if(id === "লগইন করুন" || !id) return; navigator.clipboard.writeText(id).then(() => { playSnd('snd_set'); showSmartToast("আইডি কপি হয়েছে!", "🆔"); }); }
 function toggleModal() { playSnd('snd_set'); document.getElementById("settingsModal").classList.toggle("hidden"); }
 function openFullGuide() { playSnd('snd_set'); document.getElementById("fullGuidePage").classList.remove("hidden"); }
 function closeFullGuide() { playSnd('snd_back'); document.getElementById("fullGuidePage").classList.add("hidden"); }
 
-function googleLogin() { var p = new firebase.auth.GoogleAuthProvider(); firebase.auth().signInWithPopup(p).then(() => showSmartToast("লগইন সফল!", "✅")); }
-function googleLogout() { firebase.auth().signOut().then(() => showSmartToast("লগআউট করা হয়েছে", "ℹ️")); }
+function googleLogin() { var p = new firebase.auth.GoogleAuthProvider(); firebase.auth().signInWithPopup(p).then(() => showSmartToast("লগইন সফল!", "✅")).catch(e => showSmartToast("লগইন ব্যর্থ!", "❌", true)); }
+function googleLogout() { firebase.auth().signOut().then(() => { showSmartToast("লগআউট হয়েছে", "ℹ️"); location.reload(); }); }

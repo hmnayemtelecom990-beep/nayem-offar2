@@ -10,20 +10,32 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "52d0bd9e-1030-4212-8750-51e8536d7a5e",
+      });
+    });
+  </script>
+  
+  </head>
+
 </head>
 <body>
 
 <div style="display:none;">
-  <audio id="snd_sim" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr1.mp3"></audio>
-  <audio id="snd_back"src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr2.mp3"></audio>
-  <audio id="snd_day" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr3.mp3"></audio>
-  <audio id="snd_set" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr4.mp3"></audio>
-  <audio id="snd_buy" src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mp4/mr5.mp3"></audio>
+  <audio id="snd_sim" src="mr1.mp3"></audio>
+  <audio id="snd_back"src="mr2.mp3"></audio>
+  <audio id="snd_day" src="mr3.mp3"></audio>
+  <audio id="snd_set" src="mr4.mp3"></audio>
+  <audio id="snd_buy" src="mr5.mp3"></audio>
 </div>
 
 <header class="header-content">
   <div class="logo-title-group">
-    <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/logo.png" alt="Logo" class="header-logo">
+    <img src="logo.png" alt="Logo" class="header-logo">
     <h2 id="headerTitle">কম দামে সেরা অফার</h2>
   </div>
   <button class="settings-icon" onclick="toggleModal()">♻️</button>
@@ -33,14 +45,14 @@
   <div class="video-container">
     <div class="video-card" style="position: relative;">
       <video id="tutorialVideo" controls style="width:100%; height:100%; object-fit: cover; border-radius: 15px;">
-        <source src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/mr1.mp4" type="video/mp4">
+        <source src="mr1.mp4" type="video/mp4">
         আপনার ফোন এই ভিডিও সাপোর্ট করছে না।
       </video>
 
       <div id="floatingGuide" class="floating-guide-wrapper" style="position: fixed; right: 20px; top: 180px; display: flex; align-items: center; pointer-events: none; z-index: 999;">
         <span class="guide-text-anim">অর্ডার গাইড দেখুন</span>
         <div class="guide-icon-btn" onclick="openFullGuide()" style="pointer-events: auto; background: rgba(0, 255, 255, 0.8); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid white; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,255,0.6);">
-          <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/gaid.png" style="width: 45px; height: 45px;">
+          <img src="gaid.png" style="width: 45px; height: 45px;">
         </div>
       </div>
     </div>
@@ -59,27 +71,27 @@
 
   <div class="sim-container">
     <div class="sim-card gp-theme" onclick="openOffers('Grameenphone')">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/gp.png" alt="GP" class="op-logo">
+      <img src="gp.png" alt="GP" class="op-logo">
       <span class="sim-name">Grameenphone</span>
     </div>
     <div class="sim-card robi-theme" onclick="openOffers('Robi')">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/rb.png" alt="Robi" class="op-logo">
+      <img src="rb.png" alt="Robi" class="op-logo">
       <span class="sim-name">Robi</span>
     </div>
     <div class="sim-card bl-theme" onclick="openOffers('Banglalink')">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/bl.png" alt="BL" class="op-logo">
+      <img src="bl.png" alt="BL" class="op-logo">
       <span class="sim-name">Banglalink</span>
     </div>
     <div class="sim-card airtel-theme" onclick="openOffers('Airtel')">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/ar.png" alt="Airtel" class="op-logo">
+      <img src="ar.png" alt="Airtel" class="op-logo">
       <span class="sim-name">Airtel</span>
     </div>
     <div class="sim-card teletalk-theme" onclick="openOffers('Teletalk')">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/tl.png" alt="TT" class="op-logo">
+      <img src="tl.png" alt="TT" class="op-logo">
       <span class="sim-name">Teletalk</span>
     </div>
     <div class="sim-card skitto-theme" onclick="openOffers('Skitto')">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/sk.png" alt="SK" class="op-logo">
+      <img src="sk.png" alt="SK" class="op-logo">
       <span class="sim-name">Skitto</span>
     </div>
   </div>
@@ -100,17 +112,17 @@
     </div>
     <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 15px; border-radius: 12px; margin: 15px auto; width: 85%; max-width: 400px; text-align: center; font-family: 'mr2.1', sans-serif !important; box-sizing: border-box;">
         <p id="paymentNum" style="color:#00ff88; font-size:18px; font-weight: bold; margin: 5px 0;">01609950083</p>
-        <button onclick="copyNumber(event)" style="background: #3bff00; border-bottom: 3px solid #ff0049; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
+        <button onclick="copyNumber(event)" style="background: #3bff00; border-bottom: 3px solid #ff0034; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
     </div>
     <div style="padding: 15px;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap1.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap2.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap3.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap4.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap5.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap6.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap7.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      <img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/stap8.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap1.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap2.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap3.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap4.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap5.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap6.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap7.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      <img src="stap8.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
     </div>
   </div>
 </div>
@@ -167,8 +179,8 @@
       </div>
           
           <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 15px 0;">
-              <a href="https://wa.me/8801609950083" target="_blank"><img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/wa.png" style="width: 35px;"></a>
-              <a href="https://t.me/mrmostafizurr" target="_blank"><img src="nur/ali/fm/data/hm/mr/ur/pk/mn/mrxy/mn/mediya/png/tg.png" style="width: 35px;"></a>
+              <a href="https://wa.me/8801609950083" target="_blank"><img src="wa.png" style="width: 35px;"></a>
+              <a href="https://t.me/mrmostafizurr" target="_blank"><img src="tg.png" style="width: 35px;"></a>
           </div>
       </div>
       <button class="close-btn" onclick="toggleModal()">❌হোম পেজ এ যান❌</button>
