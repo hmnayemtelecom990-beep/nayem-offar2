@@ -1,10 +1,10 @@
 /* =========================================================
    ১. ফন্ট রেজিস্ট্রেশন ও গ্লোবাল ডার্ক মোড
 ============================================================ */
-@font-face { font-family: 'HeaderFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr2.ttf') format('truetype'); }
-@font-face { font-family: 'BodyFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr2.ttf') format('truetype'); }
-@font-face { font-family: 'PriceFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr3.ttf') format('truetype'); }
-@font-face { font-family: 'ButtonFont'; src: url('../../../../../../../../../../nur/ali/fm/data/hm/mr/ur/pk/mn/mrxx/ttf/mr4.ttf') format('truetype'); }
+@font-face { font-family: 'HeaderFont'; src: url('mr2.ttf') format('truetype'); }
+@font-face { font-family: 'BodyFont'; src: url('mr2.ttf') format('truetype'); }
+@font-face { font-family: 'PriceFont'; src: url('mr3.ttf') format('truetype'); }
+@font-face { font-family: 'ButtonFont'; src: url('mr4.ttf') format('truetype'); }
 
 body { 
   margin: 0; 
@@ -18,17 +18,17 @@ body {
    ২. হেডার ডিজাইন
 ============================================================ */
 header {
-  background: linear-gradient(135deg, #1c2128, #0b0e11);
+  background: linear-gradient(100deg, #1c2128,#0b0e11);
   padding: 10px 15px; 
   position: sticky; 
   top: 0; 
   z-index: 100; 
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #095007;
   display: flex;
   align-items: center;
 }
 
-.logo-title-group { display: flex; align-items: center; gap: 15px; }
+.logo-title-group { display: flex; align-items: center; gap: 70px; }
 .header-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
 #headerTitle { font-family: 'HeaderFont', sans-serif; font-size: 18px; font-weight: bold; margin: 0; }
 
@@ -76,8 +76,8 @@ header {
 .sim-name { font-family: 'HeaderFont', sans-serif; font-weight: bold; font-size: 15px; }
 
 /* সিম থিম কালার */
-.gp-theme { background: linear-gradient(45deg, #0056b3, #00c6ff); }
-.robi-theme { background: linear-gradient(45deg, #e21313, #ff4b2b); }
+.gp-theme { background: linear-gradient(45deg, #0056b3, #ff001f); }
+.robi-theme { background: linear-gradient(-45deg, #e21313, #f8ff00); }
 .bl-theme { background: linear-gradient(45deg, #ff6600, #ff9f43); }
 .airtel-theme { background: linear-gradient(45deg, #ed1c24, #ff5252); }
 .teletalk-theme { background: linear-gradient(45deg, #28a745, #55efc4); }
@@ -87,13 +87,72 @@ header {
    ৫. অফার এবং বাটন ইফেক্ট
 ============================================================ */
 .container { padding: 15px; }
-.back-btn { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; border: none; padding: 8px 18px; border-radius: 50px; margin-bottom: 20px; cursor: pointer; }
+.back-btn { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; border: 1px solid #11ff00; padding: 8px 18px; border-radius: 50px; margin-bottom: 20px; cursor: pointer; }
 
 .days-btn { display: flex; gap: 10px; margin-bottom: 25px; }
-.days-btn button { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: bold; color: white; background: linear-gradient(135deg, #11998e, #38ef7d); cursor: pointer; }
+.days-btn button { flex: 1; padding: 12px; border-radius: 50px; border: 2px solid #fff100c7; font-weight: bold; color: white; background: linear-gradient(135deg, #11998e, #38ef7d); cursor: pointer; }
 
-.offer-card { background: #1c2128; padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #00ff88; }
-.offer-card button { background: orange; border: none; padding: 10px 20px; border-radius: 20px; color: white; font-weight: bold; cursor: pointer; }
+/* ঘূর্ণায়মান বর্ডারের মেইন ডিজাইন */
+.offer-card {
+    position: relative;
+    background: #1c2128;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden; /* এনিমেশন বাইরে যাওয়া ঠেকাবে */
+    z-index: 1;
+}
+
+/* এক সাইডের সেই সবুজ বর্ডারটি বজায় রাখা */
+.offer-card {
+    border-left: 5px solid #00ff88; 
+}
+
+/* চারদিকে ঘূর্ণায়মান বর্ডার তৈরির জন্য এনিমেশন */
+.offer-card::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: conic-gradient(#00ff88, #ff00f1, transparent, transparent, #00ff88);
+    animation: rotate 4s linear infinite;
+    z-index: -2;
+    top: -25%;
+    left: -25%;
+}
+
+/* কার্ডের ভেতরের ব্যাকগ্রাউন্ড রক্ষা করা */
+.offer-card::after {
+    content: '';
+    position: absolute;
+    inset: 3px; /* বর্ডারের চিকন ভাব কন্ট্রোল করবে */
+    background: #1c2128;
+    border-radius: 13px;
+    z-index: -1;
+}
+
+/* আপনার অরেঞ্জ বাটন স্টাইল */
+.offer-card button {
+    background: orange;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+}
+
+/* ঘুরার এনিমেশন */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 
 /* =========================================================
    ৬. ভাসমান গাইড বাটন এবং এনিমেশন

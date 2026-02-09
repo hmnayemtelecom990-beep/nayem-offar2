@@ -10,6 +10,17 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+  
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "52d0bd9e-1030-4212-8750-51e8536d7a5e",
+    });
+  });
+</script>
+  
 </head>
 <body>
 
@@ -36,6 +47,12 @@
         <source src="mr1.mp4" type="video/mp4">
         আপনার ফোন এই ভিডিও সাপোর্ট করছে না।
       </video>
+        <div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
+    <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
+    <div id="orderStatusList" style="max-height: 300px; overflow-y: auto;">
+        <p style="color: #777; font-size: 12px; text-align: center;">অর্ডার লোড হচ্ছে...</p>
+    </div>
+</div>
 
       <div id="floatingGuide" class="floating-guide-wrapper" style="position: fixed; right: 20px; top: 180px; display: flex; align-items: center; pointer-events: none; z-index: 999;">
         <span class="guide-text-anim">অর্ডার গাইড দেখুন</span>
@@ -83,12 +100,7 @@
       <span class="sim-name">Skitto</span>
     </div>
   </div>
-  <div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
-    <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
-    <div id="orderStatusList" style="max-height: 300px; overflow-y: auto;">
-        <p style="color: #777; font-size: 12px; text-align: center;">অর্ডার লোড হচ্ছে...</p>
-    </div>
-</div>
+
 
 </section>
 
@@ -98,25 +110,66 @@
       <h3 style="color: #00ffff; margin: 0;">অর্ডার করার গাইড</h3>
       <button onclick="closeFullGuide()" style="background: #ff0055; color: white; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold;">বন্ধ করুন</button>
     </div>
+    <p style="font-size: 13px; margin-bottom: 0px;color: #00d5fff1;">↓ ⬇ নিচে স্কল করুন ⬇ ↓</p>
     <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 15px; border-radius: 12px; margin: 15px auto; width: 85%; max-width: 400px; text-align: center; font-family: 'mr2.1', sans-serif !important; box-sizing: border-box;">
+        <ul style="color: #3bff00; font-size: 14px; margin: 0; padding-left: 18px; line-height: 2;">
+  💸বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন💸</ul>
+  
         <p id="paymentNum" style="color:#00ff88; font-size:18px; font-weight: bold; margin: 5px 0;">01609950083</p>
         <button onclick="copyNumber(event)" style="background: #3bff00; border-bottom: 3px solid #ff0034; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
     </div>
+    <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
+            <h4 style="color: #ffa500; margin: 0 0 5px 0; font-size: 14px;">⚠️ নির্দেশনাঃ</h4>
+            <ul style="color: #00ff03; font-size: 15px; margin: 0; padding-left: 18px; line-height: 2;">
+                <li>📳বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন💸</li>
+                <li>✔️TrxID টি কপি করে অর্ডার বক্সে দিন</li>
+                <li>✔️৮ থেকে ১০ মিনিট এর ভিতরে অফার পাবেন ইনশাআল্লাহ😎</li>
+                <li>সার্বার বা নেটওয়ার্ক সমস্যা করনে একটু সময় নিতে পারে !</li>
+                <h4 style="color: #00d5fff1; margin: 0 0 5px 0; font-size: 14px;">
+                <li>🧐সর্বোচ্চ ৩০ মিনিট এর ভিতর অফার না আসলে অথবা </li>  
+                <li>কোন প্রকার সমস্যা হলে সরাসরি আমাদের সাথে যোগাযোগ করবেন !</li>   </h4>
+                <h4 style="color: #00fffff5; margin: 0 0 5px 0; font-size: 14px;">
+                 <li>আমাদেরকে যে তথ্য দিতে হবে . . . . . . . . . </li>
+                <li>✔️আপনার UID</li>
+                <li>✔️লগইন করা gmail ID এর নাম !</li>
+                <li>পেমেন্ট করা নাম্বারের লাস্ট ৫ টি নাম্বার !</li>
+                <li>Trx ID অবশ্যই দিতে হবে !</li></h4>
+                         <h4 style="color: #f8ff00; margin: 0 0 5px 0; font-size: 14px;">        <li>অফার না আসলে ১২-২৪ ঘন্টার ভিতর ⤴️ উপরে চাওয়া সকল তথ্য দিয়ে আমাদের সাথে যোগাযোগ করবেন ⤵️📱</li>  </h4>
+                          <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 1px 0;">
+                              <a href="https://wa.me/8801609950083" target="_blank">
+                  <img src="wa.png" style="width: 35px;"></a> </div>
+
+         <h4 style="color: #ff000a; margin: 0 0 5px 0; font-size: 14px;">
+                <li>⚠️সর্বোচ্চ ২৪ ঘন্টার ভিতরে ⬆উপরে ⤴চাওয়া সকল তথ্য দিয়ে আমাদের সাথে যোগাযোগ না করলে আপনি অফার না-ও পেতে পারেন 🚫⚠️ </li>  
+           </h4>
+          </ul>
+         </div>
     <div style="padding: 15px;">
+                     <h4 style="color: #65ff00; margin: 0 0 5px 0; font-size: 14px;">
+               💸 ⬇️ বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন..নিচের নাম্বার ⬇️💸
       <img src="stap1.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+   বিকাশ/নগদ/রকেট থেকে পাওয়া TrxID কপি কেরে নিন,
       <img src="stap2.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+                 
       <img src="stap3.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+    ⬇️  যে নাম্বারে অফার নিতে চান সে-ই নাম্বার দিন ⬇️
       <img src="stap4.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+   কিসের মাধ্যমে পেমেন্ট করছেন তা সিলেক্ট করুন!  
       <img src="stap5.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      পেমেন্ট করার পর পাওয়া TrxID দিন
       <img src="stap6.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      
       <img src="stap7.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      
       <img src="stap8.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      
+          </h4>
     </div>
   </div>
 </div>
 
 <section id="offerSection" class="hidden container">
-  <button class="back-btn" onclick="goBack()">← ফিরে যান</button>
+  <button class="back-btn" onclick="goBack()">⬅ ফিরে যান</button>
   <div class="days-btn">
     <button onclick="loadOffers(7)">৭ দিন</button>
     <button onclick="loadOffers(15)">১৫ দিন</button>
@@ -128,7 +181,7 @@
 <div id="settingsModal" class="modal hidden">   
   <div class="modal-content">
       <div style="display: flex; flex-direction: column; align-items: center; margin: 20px 0;">
-          
+          <p style="font-size: 13px; margin-bottom: ;color: #ff000acc;">⤵নিচে স্কল করুন⤵</p>
           <div id="userProfileCard" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid rgba(0, 242, 254, 0.3); display: flex; align-items: center; gap: 12px;">
     
     <div id="userPhoto" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe, #4facfe); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #000; font-weight: bold;">
@@ -153,22 +206,60 @@
     <button id="loginBtn" onclick="googleLogin()" style="background: white; color: black; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; margin: 0 auto;">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> জিমেইল দিয়ে লগইন করুন
     </button>
-    <button id="logoutBtn" onclick="googleLogout()" style="background: #ff4b2b; color: white; border: none; padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; display: none; margin: 0 auto;">লগআউট করুন</button>
+    <button id="logoutBtn" onclick="googleLogout()" style="background: #ff4b2b; color: white; border: none; padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; display: none; margin: 0 auto;">        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">লগআউট করুন</button>
 </div>
 
         <div style="border: 1px solid #00ffff; padding: 5px 15px; border-radius: 50px; font-size: 14px; color: white;">ভার্সনঃ ১.০.০</div>
-        <button class="close-btn" onclick="toggleModal()">❌হোম পেজ এ যান❌</button>
+        <button class="close-btn" onclick="toggleModal()">🏠⬅ হোম পেজ এ যান</button>
       </div>
+    <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
+            <h4 style="color: #ffa500; margin: 0 0 5px 0; font-size: 14px;">⚠️ নির্দেশনাঃ</h4>
+            <ul style="color: #00ff03; font-size: 15px; margin: 0; padding-left: 18px; line-height: 2;">
+                <li>📳বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন💸</li>
+                <li>✔️TrxID টি কপি করে অর্ডার বক্সে দিন</li>
+                <li>✔️৮ থেকে ১০ মিনিট এর ভিতরে অফার পাবেন ইনশাআল্লাহ😎</li>
+                <li>সার্বার বা নেটওয়ার্ক সমস্যা করনে একটু সময় নিতে পারে!</li>
+                <h4 style="color: #00d5fff1; margin: 0 0 5px 0; font-size: 14px;">
+                <li>🧐সর্বোচ্চ ৩০ মিনিট এর ভিতর অফার না আসলে অথবা </li>  
+                <li>কোন প্রকার সমস্যা হলে সরাসরি আমাদের সাথে যোগাযোগ করবেন !</li>   </h4>
+                <h4 style="color: #00fffff5; margin: 0 0 5px 0; font-size: 14px;">
+                 <li>আমাদেরকে যে তথ্য দিতে হবে . . . . . . . . . </li>
+                <li>✔️আপনার UID</li>
+                <li>✔️লগইন করা gmail ID এর নাম !</li>
+                <li>পেমেন্ট করা নাম্বারের লাস্ট ৫ টি নাম্বার !</li>
+                <li>Trx ID অবশ্যই দিতে হবে !</li></h4>
+                         <h4 style="color: #f8ff00; margin: 0 0 5px 0; font-size: 14px;">        <li>অফার না আসলে ১২-২৪ ঘন্টার ভিতর ⤴️ উপরে চাওয়া সকল তথ্য দিয়ে আমাদের সাথে যোগাযোগ করবেন ⤵️📱</li>  </h4>
+                          <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 1px 0;">
+                              <a href="https://wa.me/8801609950083" target="_blank">
+                  <img src="wa.png" style="width: 35px;"></a> </div>
+
+         <h4 style="color: #ff000a; margin: 0 0 5px 0; font-size: 14px;">
+                <li>⚠️সর্বোচ্চ ২৪ ঘন্টার ভিতরে ⬆উপরে ⤴চাওয়া সকল তথ্য দিয়ে আমাদের সাথে যোগাযোগ না করলে আপনি অফার না-ও পেতে পারেন 🚫⚠️ </li>  
+           </h4>
+          </ul>
+         </div>
       <div class="about-section" style="text-align: center;">
           <h2 style="color:#ff000a; font-size: 18px; border-bottom: 2px solid #50ff00; display: inline-block;">👨‍💻 ডেভেলপার 👨‍💻</h2>
           <h4 style="color: white;">MR.MOSTAFIZUR & NAYEM VAI</h4>
-          <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 1px solid #333; margin-bottom: 15px;">
-        <p style="font-size: 14px; color: #eee; line-height: 1.5; margin: 0;">আসসালামু আলাইকুম। আমি একজন জুনিয়র অ্যাপ ডেভেলপার। আমি আমার সর্বাত্মক প্রচেষ্টায় আপনাদের জন্য এই অ্যাপটি তৈরি করেছি। যদি কোথাও কোন সমস্যা থাকে অথবা পরামর্শ থাকে তবে অবশ্যই জানাবেন। আমরা আপনাদের আইডিয়া নিয়ে কাজ করতে আগ্রহী।</p>
+          <div style="text-align: midel; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 1px solid #333; margin-bottom: 15px;">
+        <p style="font-size: 18px; color: #eee; line-height: 1.5; margin: 0;">আসসালামু আলাইকুম। আশা করি সবাই আল্লাহর রহমতে ভালো আছেন। আমি একজন জুনিয়র অ্যাপ ডেভেলপার। আমি আমার সর্বাত্মক প্রচেষ্টায় আপনাদের জন্য এই অ্যাপটি তৈরি করেছি। যদি এই অ্যাপগুলির মধ্যে কোথাও কোন সমস্যা থাকে অথবা আপনাদের কোন পরামর্শ থাকে তাহলে অবশ্যই আমাকে জানাবেন। আর যদি কোথাও কোন ভুল থাকে, তাহলে আমাকে ক্ষমা করে দেবেন কারণ আমিও আপনাদের মতোই একজন মানুষ। আর আপনাদের কোন চিন্তাভাবনা বা আইডিয়া থাকলে আমাকে জানাতে ভুলবেন না। আমরা আপনাদের চিন্তাভাবনা বা আইডিয়া নিয়ে কাজ শুরু করব। মনে রাখবেন আপনাদের একটি আইডিয়া আমাদের চিন্তাভাবনা বা কাজ করার ধরণ বদলে দিতে পারে। আমরা আপনাদের আইডিয়া নিয়ে কাজ করতে আগ্রহী।</p>
       </div>
-          
+      
+                      <div style="display: inline-flex;align-items: center;justify-content: center;border: 1px solid #3bff00;padding: 5px 15px; border-radius: 50px;white-space: nowrap;       font-size: 10px;color: var(--text-main);       background: rgba(255, 255, 255, 0.05);">
+        নিচের দেওয়া লোগতে ক্লিক করে আমাদের সাথে যোগাযোগ করতে পারেন
+        </div>
+                                <p style="font-size: 13px; margin-bottom: 0px;color: #515851e9;">Android App Developer & Content Creator</p>
           <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 15px 0;">
-              <a href="https://wa.me/8801609950083" target="_blank"><img src="wa.png" style="width: 35px;"></a>
-              <a href="https://t.me/mrmostafizurr" target="_blank"><img src="tg.png" style="width: 35px;"></a>
+                                  <a href="https://www.facebook.com/profile.php?id=61579692970258" target="_blank">
+                        <img src="FB.png" style="width: 35px;">
+                    </a>
+              <a href="https://wa.me/8801609950083" target="_blank">
+                  <img src="wa.png" style="width: 35px;"></a>
+              <a href="https://t.me/mrmostafizurr" target="_blank">
+                  <img src="tg.png" style="width: 35px;"></a>
+                                  <a href="https://www.facebook.com/profile.php?id=61579692970258" target="_blank">
+                        <img src="fb.png" style="width: 35px;">
+                    </a>
           </div>
       </div>
       <button class="close-btn" onclick="toggleModal()">❌হোম পেজ এ যান❌</button>
@@ -188,7 +279,7 @@
             <ul style="color: #eee; font-size: 12px; margin: 0; padding-left: 18px; line-height: 1.5;">
                 <li>📳বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন</li>
                 <li>✔️TrxID টি কপি করে নিচের বক্সে দিন</li>
-                <li>✔️৮ থেকে ১০ ঘন্টার ভিতরে অফার পাবেন ইনশাআল্লাহ</li>
+                <li>✔️৮ থেকে ১০ মিনিট এর ভিতরে অফার পাবেন ইনশাআল্লাহ</li>
             </ul>
         </div>
 

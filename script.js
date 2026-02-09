@@ -77,7 +77,7 @@ firebase.auth().onAuthStateChanged((user) => {
         if(loginBtn) loginBtn.style.display = 'flex';
         if(logoutBtn) logoutBtn.style.display = 'none';
         if(userNameDisplay) userNameDisplay.innerText = "গেস্ট ইউজার";
-        if(userPhoto) userPhoto.innerHTML = "U";
+        if(userPhoto) userPhoto.innerHTML = "X";
         if (idDisplay) idDisplay.innerText = "লগইন করুন";
         localStorage.removeItem('customerID');
     }
@@ -203,35 +203,39 @@ function loadOffers(days) {
   currentDays = days;
   const list = document.getElementById("offerList");
 
-  // ১. রিফ্রেশ ফিক্স: আগের ডাটা মুছে ফেলার জন্য
-  list.innerHTML = '<p style="text-align:center; color:#00f2fe; padding:20px;">অফার লোড হচ্ছে...</p>';
-  
-  database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
+
+// ১. রিফ্রেশ ফিক্স: আগের ডাটা মুছে ফেলার জন্য
+list.innerHTML = '<p style="text-align:center; color:#00f2fe; padding:20px;">অফার লোড হচ্ছে...</p>';
+
+database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
     list.innerHTML = ""; // ২. ডাটা আসার পর আবার ক্লিয়ার করে ফ্রেশ ডাটা বসানো
     if (!snap.exists()) { 
         list.innerHTML = '<p style="text-align:center; color:#ff4b2b; padding:20px;">দুঃখিত, কোনো অফার নেই।</p>'; 
         return; 
     }
     snap.forEach(child => {
-      let o = child.val();
-      list.innerHTML += `
-        <div class="offer-card" style="background:#1e1e1e; margin-bottom:12px; padding:15px; border-radius:12px; display:flex; align-items:center; border:1px solid #333;">
-            <div style="flex: 1;">
-                <h4 style="margin:0; color:white;">${o.title}</h4>
-                <p style="margin:5px 0; font-size:12px; color:#ff4b2b;">দোকান: <del>৳${o.dokanPrice || '0'}</del></p>
-                <p style="color:#00f2fe; font-weight:bold; font-size:18px;">৳${o.price}</p>
+        let o = child.val();
+        list.innerHTML += `
+        <div class="offer-card" style="height: auto; min-height: auto; padding: 12px; margin-bottom: 10px; display: flex; align-items: center;">
+            <div style="flex: 1; z-index: 2;">
+                <h4 style="margin: 0; color: white; line-height: 1.2; font-size: 15px;">${o.title}</h4>
+                <p style="margin: 4px 0; font-size: 11px; color: #ffcc00; line-height: 1;">শর্তঃ ${o.condition || 'কোনো শর্ত নেই'}</p>
+                <p style="margin: 2px 0; font-size: 11px; color: #ff4b2b; line-height: 1;">দোকান মুল্য ঃ <del>৳${o.dokanPrice || '0'}</del></p>
+                <p style="margin: 2px 0; color: #00f2fe; font-weight: bold; font-size: 17px; line-height: 1.2;">আমাদের মুল্য ঃ ৳${o.price}</p>
             </div>
-            <button onclick="order('${o.title.replace(/'/g, "\\'")}', '${o.price}')" style="background:linear-gradient(135deg, #00f2fe, #4facfe); color:#000; border:none; padding:10px 15px; border-radius:20px; font-weight:bold;">কিনুন</button>
+            <button onclick="order('${o.title.replace(/'/g, "\\'")}', '${o.price}')" style="background:linear-gradient(135deg, #ff00f1, #7aff00); color:#000; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; margin-left:10px; white-space: nowrap;">🛒কিনুন</button>
         </div>`;
     });
-  });
+});
+}
+function goBack() { playSnd('snd_back'); document.getElementById("offerSection").classList.add("hidden"); document.getElementById("homeSection").classList.remove("hidden"); 
+document.getElementById("headerTitle").innerText = "কম দামে সেরা অফার "; 
 }
 
-function goBack() { playSnd('snd_back'); document.getElementById("offerSection").classList.add("hidden"); document.getElementById("homeSection").classList.remove("hidden"); }
 
 function order(title, price) {
   var user = firebase.auth().currentUser;
-  if (!user) { showSmartToast("অর্ডার করতে আগে লগইন করুন!", "⚠️", true); toggleModal(); return; }
+  if (!user) { showSmartToast("📬অর্ডার করতে আগে লগইন করুন!", "⚠️", true); toggleModal(); return; }
   playSnd('snd_buy'); tempTitle = title; tempPrice = price;
   document.getElementById('offNameText').innerText = title;
   document.getElementById('offPriceText').innerText = "দামঃ ৳ " + price;
