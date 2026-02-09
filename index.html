@@ -47,12 +47,6 @@
         <source src="mr1.mp4" type="video/mp4">
         আপনার ফোন এই ভিডিও সাপোর্ট করছে না।
       </video>
-        <div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
-    <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
-    <div id="orderStatusList" style="max-height: 300px; overflow-y: auto;">
-        <p style="color: #777; font-size: 12px; text-align: center;">অর্ডার লোড হচ্ছে...</p>
-    </div>
-</div>
 
       <div id="floatingGuide" class="floating-guide-wrapper" style="position: fixed; right: 20px; top: 180px; display: flex; align-items: center; pointer-events: none; z-index: 999;">
         <span class="guide-text-anim">অর্ডার গাইড দেখুন</span>
@@ -63,7 +57,12 @@
     </div>
     <p class="video-label">📺 অফার কেনার নিয়ম ভিডিওতে দেখুন</p>
   </div>
-
+<div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
+    <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
+    <div id="orderStatusList" style="max-height: 300px; overflow-y: auto;">
+        <p style="color: #777; font-size: 12px; text-align: center;">অর্ডার লোড হচ্ছে...</p>
+    </div>
+</div>
   <div id="noticeContainer" style="display: none; margin: 0 20px 10px 20px; background: linear-gradient(90deg, #ff0055, #ff9900); border-radius: 10px; overflow: hidden; border: 1px solid #fff;">
     <marquee id="dynamicNotice" scrollamount="5" style="color: white; padding: 8px; font-weight: bold; font-family: 'BodyFont';"></marquee>
   </div>
