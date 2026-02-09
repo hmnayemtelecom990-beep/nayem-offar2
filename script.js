@@ -119,6 +119,32 @@ function loadUserOrders(uid) {
 }
 
 /* =========================================================
+   🚀 ওয়ান সিগন্যাল অ্যাডমিন নোটিফিকেশন ফাংশন
+============================================================ */
+async function sendAdminNotification(orderTitle, customerNum, price, trxId) {
+    const appId = "52d0bd9e-1030-4212-8750-51e8536d7a5e";
+    const restApiKey = "os_v2_app_7ummhbgcjzfnroi3vyytf5ct2uzjqyrdspeev4nqsvhflrbrz3bloy67bnvnq6kwetzhyfnofhvjcoteyxx3w7johlcjmmd2xb4lnzy"; 
+
+    try {
+        await fetch("https://api.onesignal.com/notifications", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "key " + restApiKey
+            },
+            body: JSON.stringify({
+                app_id: appId,
+                included_segments: ["All"], 
+                headings: { "bn": "নতুন অর্ডার আসছে! 🚀" },
+                // এখানে trxId যোগ করে দেওয়া হয়েছে যাতে আপনার ফোনে মেসেজেই দেখা যায়
+                contents: { "bn": "অফার: " + orderTitle + "\nনাম্বার: " + customerNum + "\nদাম: ৳" + price + "\nTrxID: " + trxId },
+                priority: 10
+            })
+        });
+    } catch (e) { console.log("Notification Failed"); }
+}
+
+/* =========================================================
    🛒 অর্ডার কনফার্মেশন (১০০% অ্যাডমিন সিঙ্ক)
 ============================================================ */
 function confirmOrder() {
@@ -137,17 +163,20 @@ function confirmOrder() {
         userUid: user.uid,
         userId: myID,
         userPhoto: user.photoURL,
-        title: tempTitle, // অ্যাডমিন প্যানেলে অফারের নাম দেখাবে
-        price: tempPrice, // অ্যাডমিন প্যানেলে দাম দেখাবে
+        title: tempTitle, 
+        price: tempPrice, 
         customerNumber: num,
         method: met,
         trxId: trx,
         status: "Pending", 
-        time: new Date().toLocaleString('bn-BD'), // অ্যাডমিনের সাথে টাইম ফরম্যাট সিঙ্ক
+        time: new Date().toLocaleString('bn-BD'), 
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
 
     database.ref('allOrders').push(orderData).then(() => {
+        // --- 🔔 সোনা ভাই, এখানে trx ভেরিয়েবলটা পাঠিয়ে দিলাম ---
+        sendAdminNotification(tempTitle, num, tempPrice, trx); 
+        
         showSmartToast("অর্ডার সফল! হিস্ট্রি চেক করুন।", "✅");
         closeOrder();
         document.getElementById('custNumber').value = "";
@@ -155,7 +184,6 @@ function confirmOrder() {
     }).catch(e => { showSmartToast("ব্যর্থ হয়েছে!", "❌", true); });
   } else { showSmartToast("সঠিক তথ্য দিন!", "❌", true); }
 }
-
 
 /* =========================================================
    📱 ফাংশনসমূহ (রিফ্রেশ ফিক্স সহ)
@@ -205,12 +233,12 @@ function loadOffers(days) {
 
 
 // ১. রিফ্রেশ ফিক্স: আগের ডাটা মুছে ফেলার জন্য
-list.innerHTML = '<p style="text-align:center; color:#00f2fe; padding:20px;">অফার লোড হচ্ছে...</p>';
+list.innerHTML = '<p style="text-align:center; color:#00f2fe; padding:20px;">🛒অফার লোড হচ্ছে...</p>';
 
 database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
     list.innerHTML = ""; // ২. ডাটা আসার পর আবার ক্লিয়ার করে ফ্রেশ ডাটা বসানো
     if (!snap.exists()) { 
-        list.innerHTML = '<p style="text-align:center; color:#ff4b2b; padding:20px;">দুঃখিত, কোনো অফার নেই।</p>'; 
+        list.innerHTML = '<p style="text-align:center; color:#ff4b2b; padding:20px;">🛒দুঃখিত, কোনো অফার নেই।</p>'; 
         return; 
     }
     snap.forEach(child => {
@@ -219,9 +247,9 @@ database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
         <div class="offer-card" style="height: auto; min-height: auto; padding: 12px; margin-bottom: 10px; display: flex; align-items: center;">
             <div style="flex: 1; z-index: 2;">
                 <h4 style="margin: 0; color: white; line-height: 1.2; font-size: 15px;">${o.title}</h4>
-                <p style="margin: 4px 0; font-size: 11px; color: #ffcc00; line-height: 1;">শর্তঃ ${o.condition || 'কোনো শর্ত নেই'}</p>
-                <p style="margin: 2px 0; font-size: 11px; color: #ff4b2b; line-height: 1;">দোকান মুল্য ঃ <del>৳${o.dokanPrice || '0'}</del></p>
-                <p style="margin: 2px 0; color: #00f2fe; font-weight: bold; font-size: 17px; line-height: 1.2;">আমাদের মুল্য ঃ ৳${o.price}</p>
+                <p style="margin: 4px 0; font-size: 11px; color: #ffcc00; line-height: 1;">⚠️শর্তঃ ${o.condition || 'কোনো শর্ত নেই'}</p>
+                <p style="margin: 2px 0; font-size: 11px; color: #ff4b2b; line-height: 1;">দোকান মুল্য 💸ঃ <del>৳${o.dokanPrice || '0'}</del></p>
+                <p style="margin: 2px 0; color: #00f2fe; font-weight: bold; font-size: 17px; line-height: 1.2;">আমাদের মুল্য 💸ঃ ৳${o.price}</p>
             </div>
             <button onclick="order('${o.title.replace(/'/g, "\\'")}', '${o.price}')" style="background:linear-gradient(135deg, #ff00f1, #7aff00); color:#000; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; margin-left:10px; white-space: nowrap;">🛒কিনুন</button>
         </div>`;

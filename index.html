@@ -11,16 +11,15 @@
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
   
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
-      appId: "52d0bd9e-1030-4212-8750-51e8536d7a5e",
+      appId: "fd18c384-c24e-4ad8-b91b-ae3132f453d5",
     });
   });
 </script>
-  
 </head>
 <body>
 
@@ -41,12 +40,15 @@
 </header>
 
 <section id="homeSection">
-  <div class="video-container">
-    <div class="video-card" style="position: relative;">
-      <video id="tutorialVideo" controls style="width:100%; height:100%; object-fit: cover; border-radius: 15px;">
+  <div class="video-container" style="padding: 10px; display: flex; justify-content: center;">
+    
+    <div class="video-card" style="position: relative; width: 100%; height: auto; overflow: hidden; border-radius: 12px; background: #000; border: 1.5px solid #a4ff00;">
+      
+      <video id="tutorialVideo" autoplay muted loop playsinline controls style="width:100%; height: auto; display: block; cursor: pointer;">
         <source src="mr1.mp4" type="video/mp4">
         আপনার ফোন এই ভিডিও সাপোর্ট করছে না।
       </video>
+      </div>
 
       <div id="floatingGuide" class="floating-guide-wrapper" style="position: fixed; right: 20px; top: 180px; display: flex; align-items: center; pointer-events: none; z-index: 999;">
         <span class="guide-text-anim">অর্ডার গাইড দেখুন</span>
@@ -55,12 +57,12 @@
         </div>
       </div>
     </div>
-    <p class="video-label">📺 অফার কেনার নিয়ম ভিডিওতে দেখুন</p>
+    <p class="video-label">🛒 অফার কেনার নিয়ম অর্ডার গাইড দেখুন</p>
   </div>
 <div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
     <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
     <div id="orderStatusList" style="max-height: 300px; overflow-y: auto;">
-        <p style="color: #777; font-size: 12px; text-align: center;">অর্ডার লোড হচ্ছে...</p>
+        <p style="color: #777; font-size: 12px; text-align: center;">🛒অর্ডার লোড হচ্ছে...</p>
     </div>
 </div>
   <div id="noticeContainer" style="display: none; margin: 0 20px 10px 20px; background: linear-gradient(90deg, #ff0055, #ff9900); border-radius: 10px; overflow: hidden; border: 1px solid #fff;">
@@ -211,6 +213,13 @@
         <div style="border: 1px solid #00ffff; padding: 5px 15px; border-radius: 50px; font-size: 14px; color: white;">ভার্সনঃ ১.০.০</div>
         <button class="close-btn" onclick="toggleModal()">🏠⬅ হোম পেজ এ যান</button>
       </div>
+      <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 15px; border-radius: 12px; margin: 15px auto; width: 85%; max-width: 400px; text-align: center; font-family: 'mr2.1', sans-serif !important; box-sizing: border-box;">
+        <ul style="color: #3bff00; font-size: 14px; margin: 0; padding-left: 18px; line-height: 2;">
+  💸বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন💸</ul>
+  
+        <p id="paymentNum" style="color:#00ff88; font-size:18px; font-weight: bold; margin: 5px 0;">01609950083</p>
+        <button onclick="copyNumber(event)" style="background: #3bff00; border-bottom: 3px solid #ff0034; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
+    </div>
     <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
             <h4 style="color: #ffa500; margin: 0 0 5px 0; font-size: 14px;">⚠️ নির্দেশনাঃ</h4>
             <ul style="color: #00ff03; font-size: 15px; margin: 0; padding-left: 18px; line-height: 2;">
@@ -222,7 +231,7 @@
                 <li>🧐সর্বোচ্চ ৩০ মিনিট এর ভিতর অফার না আসলে অথবা </li>  
                 <li>কোন প্রকার সমস্যা হলে সরাসরি আমাদের সাথে যোগাযোগ করবেন !</li>   </h4>
                 <h4 style="color: #00fffff5; margin: 0 0 5px 0; font-size: 14px;">
-                 <li>আমাদেরকে যে তথ্য দিতে হবে . . . . . . . . . </li>
+                    <h4 style="color: #ffa500; margin: 0 0 5px 0; font-size: 14px;">আমাদেরকে যে তথ্য দিতে হবে . . . . . . . . .</h4>
                 <li>✔️আপনার UID</li>
                 <li>✔️লগইন করা gmail ID এর নাম !</li>
                 <li>পেমেন্ট করা নাম্বারের লাস্ট ৫ টি নাম্বার !</li>
@@ -250,7 +259,7 @@
                                 <p style="font-size: 13px; margin-bottom: 0px;color: #515851e9;">Android App Developer & Content Creator</p>
           <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 15px 0;">
                                   <a href="https://www.facebook.com/profile.php?id=61579692970258" target="_blank">
-                        <img src="FB.png" style="width: 35px;">
+                        <img src="fb.png" style="width: 35px;">
                     </a>
               <a href="https://wa.me/8801609950083" target="_blank">
                   <img src="wa.png" style="width: 35px;"></a>
@@ -261,7 +270,7 @@
                     </a>
           </div>
       </div>
-      <button class="close-btn" onclick="toggleModal()">❌হোম পেজ এ যান❌</button>
+      <button class="close-btn" onclick="toggleModal()">🏠⬅হোম পেজ এ যান</button>
   </div>
 </div>
 
