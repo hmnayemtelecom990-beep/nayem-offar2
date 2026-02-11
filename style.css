@@ -237,3 +237,201 @@ header {
     border-color: #ff4b2b;
     box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
 }
+
+
+/* নোটিশ ওভারলে */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9); /* হালকা কালো স্বচ্ছ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999; /* সবকিছুর উপরে থাকবে */
+    backdrop-filter: blur(8px); /* ব্যাকগ্রাউন্ড ঝাপসা করবে */
+}
+
+/* নোটিশ কার্ড ডিজাইন */
+/* নোটিশ কার্ড ডিজাইন - আপডেট করা */
+.notice-card {
+    background: #161b22;
+    width: 85%;
+    max-width: 350px;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #00f2fe;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.2);
+    animation: slideIn 0.4s ease-out;
+
+    /* লেখা অনেক বেশি হলে যেন স্ক্রিনের বাইরে না যায় */
+    max-height: 80vh; /* স্ক্রিনের ৮০% পর্যন্ত বড় হবে */
+    overflow-y: auto; /* লেখা আরও বেশি হলে বক্সের ভেতরেই স্ক্রল করা যাবে */
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.notice-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.notice-title {
+    color: #00f2fe;
+    font-size: 20px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.notice-body p {
+    color: #eeeeee;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* ক্লোজ বাটন - গ্লোয়িং ইফেক্ট */
+.notice-close-btn {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    color: #000;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
+    transition: 0.3s;
+}
+
+.notice-close-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00f2fe;
+}
+
+
+/* ফ্লোটিং ব্যাক বাটন স্টাইল */
+.floating-back-wrapper {
+    position: fixed;
+    bottom: 300px; /* নিচ থেকে ৩০px উপরে */
+    left: 20px;   /* বাম থেকে ২০px দূরে */
+    z-index: 99999;
+    touch-action: none; /* ড্র্যাগ করার জন্য জরুরি */
+}
+
+.back-btn-float {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff0055 0%, #ff4b2b 100%);
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%; /* গোল বাটন */
+    font-size: 20px;
+    font-weight: bold;
+    cursor: move; /* মাউস নিলে ড্র্যাগ আইকন দেখাবে */
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =========================================
+   🚀 উন্নত লোডার এবং এনিমেশন ডিজাইন (Fixed Center)
+   ========================================= */
+
+/* ১. মেইন কন্টেইনার */
+.loader-container {
+    position: relative;
+    height: 350px; /* উচ্চতা অ্যাপ অনুযায়ী সেট করলাম */
+    display: flex;
+    justify-content: center; /* লোগোকে ডানে-বামে মাঝখানে আনবে */
+    align-items: center;     /* লোগোকে উপরে-নিচে মাঝখানে আনবে */
+    overflow: hidden;
+}
+
+/* ২. মাঝখানের ছবির ডিজাইন ও পালস এনিমেশন */
+.main-loader-img {
+    position: relative; /* একে সেন্টার পয়েন্ট হিসেবে ধরবে */
+    width: 90px;
+    height: 90px;
+    z-index: 10;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ceff00ab;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+    animation: imagePulse 1.5s infinite ease-in-out;
+}
+
+.main-loader-img img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+/* ছবির উজ্জ্বলতা ও বড়-ছোট হওয়ার ম্যাজিক */
+@keyframes imagePulse {
+    0% { transform: scale(0.8); filter: brightness(0.2) grayscale(0.5); }
+    50% { transform: scale(1.1); filter: brightness(1.8) grayscale(0); }
+    100% { transform: scale(0.8); filter: brightness(0.2) grayscale(0.5); }
+}
+
+/* ৩. গোল গোল আলোর রশ্মি (Ripple Rings) */
+.ripple-ring {
+    position: absolute; /* লোগোর ঠিক উপরে বা নিচে বসানোর জন্য */
+    top: 50%; /* কন্টেইনারের মাঝখান */
+    left: 50%; /* কন্টেইনারের মাঝখান */
+    /* translate(-50%, -50%) না দিলে রেখাগুলো লোগোর মাঝখান থেকে বের হবে না */
+    transform: translate(-50%, -50%); 
+    width: 90px;
+    height: 90px;
+    border: 2px solid #00f2fe;
+    border-radius: 50%;
+    z-index: 1; /* লোগোর নিচে থাকবে */
+    pointer-events: none;
+    animation: rippleEffect 2.5s infinite cubic-bezier(0.2, 0, 0.2, 1);
+    opacity: 0;
+}
+
+/* রিংগুলোর টাইমিং গ্যাপ */
+.delay-1 { animation-delay: 0.8s; }
+.delay-2 { animation-delay: 1.6s; }
+
+/* আলোর রশ্মি ছড়িয়ে পড়ার ফিক্সড এনিমেশন */
+@keyframes rippleEffect {
+    0% { 
+        /* শুরুতে লোগোর নিচে লুকিয়ে থাকবে */
+        transform: translate(-50%, -50%) scale(1); 
+        opacity: 0; 
+        border-color: #ff00f1;
+    }
+    20% { opacity: 0.6; }
+    100% { 
+        /* ফেটে বড় হওয়ার সময়ও সেন্টার পয়েন্টে থাকবে */
+        transform: translate(-50%, -50%) scale(4.5); 
+        opacity: 0; 
+        border-color: #00f2fe;
+    }
+}
+
+/* ৪. লোডিং টেক্সট ডিজাইন */
+.loading-text {
+    position: absolute;
+    bottom: 20px; /* একদম নিচে রাখার জন্য */
+    color: #00f2fe;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: textGlow 1.5s infinite ease-in-out;
+}
+
+

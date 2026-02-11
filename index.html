@@ -22,6 +22,20 @@
 </script>
 </head>
 <body>
+<div id="notice-modal" class="modal-overlay">
+    <div class="notice-card">
+        <div class="notice-icon">📢</div>
+        <h3 class="notice-title">জরুরি নোটিশ</h3>
+        <div class="notice-body">
+            <p id="main-notice-text">
+   <ul>আসসালামু আলাইকুম নাঈম টেলিকম থেকে আপনাকে স্বাগতম</ul> <ul>কোনো ধরনের সমস্যা হলে আমাদের সাথে যোগাযোগ করার জন্য হোয়াটসঅ্যাপ নাম্বার 01609950083</ul>
+                <ul>আজকের ড্রাইভ অফার না নিলে আপনারই লস।
+এখনি ড্রাইভ এ ক্লিক করে আপনার কাঙ্খিত অফারটি</ul>
+            </p>
+        </div>
+        <button onclick="closeNotice()" class="notice-close-btn">ঠিক আছে, বুঝেছি</button>
+    </div>
+</div>
 
 <div style="display:none;">
   <audio id="snd_sim" src="mr1.mp3"></audio>
@@ -38,7 +52,6 @@
   </div>
   <button class="settings-icon" onclick="toggleModal()">♻️</button>
 </header>
-
 <section id="homeSection">
   <div class="video-container" style="padding: 10px; display: flex; justify-content: center;">
     
@@ -58,6 +71,7 @@
       </div>
     </div>
     <p class="video-label">🛒 অফার কেনার নিয়ম অর্ডার গাইড দেখুন</p>
+
   </div>
 <div id="userOrderSection" style="margin: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 15px; display: none;">
     <h3 style="color: #00f2fe; font-size: 16px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">📋 আপনার অর্ডার সমূহ</h3>
@@ -102,7 +116,7 @@
     </div>
   </div>
 
-
+    <p style="color: #3bff00; font-size: 14px; margin: 0; line-height: 2;">প্রিয় গ্রাহক আমাদের ডেভেলপার-রা আপনাদের জন্য খুব শীগ্রই এপ নিয়ে আসবেন,-এপ আসার আগ পর্যন্ত লিংক এর মাধ্যমে ব্যাবহার করুণ  </p>
 </section>
 
 <div id="fullGuidePage" class="modal hidden" style="background: #000; z-index: 20000;">
@@ -129,12 +143,11 @@
                 <h4 style="color: #00d5fff1; margin: 0 0 5px 0; font-size: 14px;">
                 <li>🧐সর্বোচ্চ ৩০ মিনিট এর ভিতর অফার না আসলে অথবা </li>  
                 <li>কোন প্রকার সমস্যা হলে সরাসরি আমাদের সাথে যোগাযোগ করবেন !</li>   </h4>
-                <h4 style="color: #00fffff5; margin: 0 0 5px 0; font-size: 14px;">
-                 <li>আমাদেরকে যে তথ্য দিতে হবে . . . . . . . . . </li>
+<h4 style="color: #ffa500; margin: 0 0 5px 0; font-size: 14px;">আমাদেরকে যে তথ্য দিতে হবে . . . . . . . . .</h4>
                 <li>✔️আপনার UID</li>
                 <li>✔️লগইন করা gmail ID এর নাম !</li>
-                <li>পেমেন্ট করা নাম্বারের লাস্ট ৫ টি নাম্বার !</li>
-                <li>Trx ID অবশ্যই দিতে হবে !</li></h4>
+                <li>✔️পেমেন্ট করা নাম্বারের লাস্ট ৫ টি নাম্বার !</li>
+                <li>✔️Trx ID অবশ্যই দিতে হবে !</li></h4>
                          <h4 style="color: #f8ff00; margin: 0 0 5px 0; font-size: 14px;">        <li>অফার না আসলে ১২-২৪ ঘন্টার ভিতর ⤴️ উপরে চাওয়া সকল তথ্য দিয়ে আমাদের সাথে যোগাযোগ করবেন ⤵️📱</li>  </h4>
                           <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 1px 0;">
                               <a href="https://wa.me/8801609950083" target="_blank">
@@ -147,37 +160,48 @@
          </div>
     <div style="padding: 15px;">
                      <h4 style="color: #65ff00; margin: 0 0 5px 0; font-size: 14px;">
+  📬আপনার প্রাইভেট জিমেইল দিয়ে লগ-ইন করুন 
+                <img src="stap12.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+      🛒কোন সিমে নিতে চান
+                      <img src="stap13.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
+  🛒যে অফার টি নিতে চান তার কিনুন বাটনে ক্লিক করুন   
+                            <img src="stap14.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
                💸 ⬇️ বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন..নিচের নাম্বার ⬇️💸
       <img src="stap1.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
    বিকাশ/নগদ/রকেট থেকে পাওয়া TrxID কপি কেরে নিন,
       <img src="stap2.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-                 
+              ✔️ আপনার অফার টি ঠিক আসে কি না দেখে নিন  
       <img src="stap3.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
     ⬇️  যে নাম্বারে অফার নিতে চান সে-ই নাম্বার দিন ⬇️
       <img src="stap4.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-   কিসের মাধ্যমে পেমেন্ট করছেন তা সিলেক্ট করুন!  
+   💸কিসের মাধ্যমে পেমেন্ট করছেন তা সিলেক্ট করুন!💸
       <img src="stap5.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      পেমেন্ট করার পর পাওয়া TrxID দিন
+     💳পেমেন্ট করার পর পাওয়া TrxID দিন
       <img src="stap6.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      
+     🛒অর্ডার দিন বাটনে ক্লিক করে অর্ডার সম্পূর্ণ করুন✔️
       <img src="stap7.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      
+      🛒অর্ডার সম্পূর্ণ করে এখানে দেখুন অর্ডার-টি কোন অবস্থায় আছে 
       <img src="stap8.png" style="width: 100%; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333;">
-      
+      সম্পূর্ণ গাইড দেখার জন্য আপনাকে অসংখ্য ধন্যবাদ 
           </h4>
     </div>
   </div>
 </div>
-
 <section id="offerSection" class="hidden container">
-  <button class="back-btn" onclick="goBack()">⬅ ফিরে যান</button>
+<div id="floatingBackBtn" class="floating-back-wrapper" style="display:none;">
+    <button class="back-btn-float" onclick="goBack()">🔙</button>
+</div>
+
+
   <div class="days-btn">
     <button onclick="loadOffers(7)">৭ দিন</button>
     <button onclick="loadOffers(15)">১৫ দিন</button>
     <button onclick="loadOffers(30)">৩০ দিন</button>
   </div>
+
   <div id="offerList"></div>
 </section>
+
 
 <div id="settingsModal" class="modal hidden">   
   <div class="modal-content">
@@ -214,8 +238,9 @@
         <button class="close-btn" onclick="toggleModal()">🏠⬅ হোম পেজ এ যান</button>
       </div>
       <div style="background: rgba(255, 165, 0, 0.1); border: 1.5px solid #ffa500; padding: 15px; border-radius: 12px; margin: 15px auto; width: 85%; max-width: 400px; text-align: center; font-family: 'mr2.1', sans-serif !important; box-sizing: border-box;">
-        <ul style="color: #3bff00; font-size: 14px; margin: 0; padding-left: 18px; line-height: 2;">
+        <ul style="color: #3bff00; font-size: 11px; margin: 0; padding-left: 18px; line-height: 2;">
   💸বিকাশ/নগদ/রকেট থেকে সেন্ড মানি করুন💸</ul>
+  <ul style="color: #f8ff00; font-size: 14px; margin: 0; padding-left: 18px; line-height: 2;">⬇ এই নাম্বারে ⬇</ul>
   
         <p id="paymentNum" style="color:#00ff88; font-size:18px; font-weight: bold; margin: 5px 0;">01609950083</p>
         <button onclick="copyNumber(event)" style="background: #3bff00; border-bottom: 3px solid #ff0034; padding: 6px 15px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer;">কপি করুন</button>
@@ -248,7 +273,7 @@
          </div>
       <div class="about-section" style="text-align: center;">
           <h2 style="color:#ff000a; font-size: 18px; border-bottom: 2px solid #50ff00; display: inline-block;">👨‍💻 ডেভেলপার 👨‍💻</h2>
-          <h4 style="color: white;">MR.MOSTAFIZUR & NAYEM VAI</h4>
+          <h4 style="color: white;">HM NAYEM HAWLADER </h4>
           <div style="text-align: midel; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 1px solid #333; margin-bottom: 15px;">
         <p style="font-size: 18px; color: #eee; line-height: 1.5; margin: 0;">আসসালামু আলাইকুম। আশা করি সবাই আল্লাহর রহমতে ভালো আছেন। আমি একজন জুনিয়র অ্যাপ ডেভেলপার। আমি আমার সর্বাত্মক প্রচেষ্টায় আপনাদের জন্য এই অ্যাপটি তৈরি করেছি। যদি এই অ্যাপগুলির মধ্যে কোথাও কোন সমস্যা থাকে অথবা আপনাদের কোন পরামর্শ থাকে তাহলে অবশ্যই আমাকে জানাবেন। আর যদি কোথাও কোন ভুল থাকে, তাহলে আমাকে ক্ষমা করে দেবেন কারণ আমিও আপনাদের মতোই একজন মানুষ। আর আপনাদের কোন চিন্তাভাবনা বা আইডিয়া থাকলে আমাকে জানাতে ভুলবেন না। আমরা আপনাদের চিন্তাভাবনা বা আইডিয়া নিয়ে কাজ শুরু করব। মনে রাখবেন আপনাদের একটি আইডিয়া আমাদের চিন্তাভাবনা বা কাজ করার ধরণ বদলে দিতে পারে। আমরা আপনাদের আইডিয়া নিয়ে কাজ করতে আগ্রহী।</p>
       </div>
@@ -258,14 +283,14 @@
         </div>
                                 <p style="font-size: 13px; margin-bottom: 0px;color: #515851e9;">Android App Developer & Content Creator</p>
           <div class="social-links" style="display: flex; justify-content: center; gap: 15px; margin: 15px 0;">
-                                  <a href="https://www.facebook.com/profile.php?id=61579692970258" target="_blank">
+                                  <a href="https://www.facebook.com/share/1C2bkN2iCW/" target="_blank">
                         <img src="fb.png" style="width: 35px;">
                     </a>
               <a href="https://wa.me/8801609950083" target="_blank">
                   <img src="wa.png" style="width: 35px;"></a>
-              <a href="https://t.me/mrmostafizurr" target="_blank">
+              <a href="https://t.me/+ge8VVLRh5Rs2MzY1" target="_blank">
                   <img src="tg.png" style="width: 35px;"></a>
-                                  <a href="https://www.facebook.com/profile.php?id=61579692970258" target="_blank">
+                                  <a href="https://www.facebook.com/profile.php?id=61580037466042" target="_blank">
                         <img src="fb.png" style="width: 35px;">
                     </a>
           </div>
@@ -311,7 +336,8 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js" defer></script>
+
 <div id="smartToast" class="smart-toast">
     <span id="toastIcon">✅</span>
     <span id="toastMsg">কপি করা হয়েছে!</span>

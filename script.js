@@ -84,7 +84,7 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 /* =========================================================
-   📊 রিয়েল-টাইম অর্ডার হিস্ট্রি (অ্যাডমিন প্যানেল সিঙ্ক)
+   📊 রিয়েল-টাইম অর্ডার হিস্ট্রি (অ্যাডমিন প্যানেল সিঙ্ক + ডিলিট বাটন)
 ============================================================ */
 function loadUserOrders(uid) {
     const orderDiv = document.getElementById('userOrderSection');
@@ -94,9 +94,15 @@ function loadUserOrders(uid) {
     database.ref('allOrders').orderByChild('userUid').equalTo(uid).on('value', snap => {
         if (snap.exists()) {
             orderDiv.style.display = 'block';
-            orderList.innerHTML = ""; // আগের ডাটা মুছে ফ্রেশ করে দেখানোর জন্য
+            orderList.innerHTML = ""; 
             let orders = [];
-            snap.forEach(child => { orders.unshift(child.val()); });
+            
+            // এখানে child.key টাও নিচ্ছি যাতে ঠিক ওই অর্ডারটাই ডিলিট হয়
+            snap.forEach(child => { 
+                let data = child.val();
+                data.key = child.key; 
+                orders.unshift(data); 
+            });
 
             orders.forEach(o => {
                 let statusColor = "#ffcc00"; 
@@ -104,8 +110,13 @@ function loadUserOrders(uid) {
                 if(o.status === "Rejected") statusColor = "#ff4b2b";
 
                 orderList.innerHTML += `
-                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid ${statusColor}; border-bottom: 1px solid #333;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid ${statusColor}; border-bottom: 1px solid #333; position: relative;">
+                        
+                        <div onclick="deleteOrder('${o.key}')" style="position: absolute; right: 10px; top: 12px; cursor: pointer; color: #ff4b2b; font-size: 16px; padding: 5px; z-index: 10;">
+                            🗑️
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 25px;">
                             <strong style="color: white; font-size: 13px;">${o.title || 'অফার'}</strong>
                             <span style="color: ${statusColor}; font-size: 10px; font-weight: bold;">● ${o.status}</span>
                         </div>
@@ -117,6 +128,7 @@ function loadUserOrders(uid) {
         } else { orderDiv.style.display = 'none'; }
     });
 }
+
 
 /* =========================================================
    🚀 ওয়ান সিগন্যাল অ্যাডমিন নোটিফিকেশন ফাংশন
@@ -218,29 +230,43 @@ function openDhakaOrder() { if (globalDhakaOffer) { currentDays = globalDhakaOff
 
 function openOffers(sim) { 
     playSnd('snd_sim'); 
+    addToHistory(); 
     currentSim = sim; 
+
     document.getElementById("homeSection").classList.add("hidden"); 
     document.getElementById("offerSection").classList.remove("hidden"); 
     document.getElementById("headerTitle").innerText = sim + " Offers";
-    // সিম পরিবর্তনের সময় লিস্ট ক্লিয়ার করার জন্য
-    document.getElementById("offerList").innerHTML = "";
+    
+    // শুরুতে এই মেসেজটি দেখাবে
+    document.getElementById("offerList").innerHTML = `
+        <div style="text-align:center; color:#00f2fe; padding:50px 20px; font-weight:bold; font-size:18px;">
+            ⚠️ আগে মেয়াদ সিলেক্ট করুন
+        </div>`;
 }
-
 function loadOffers(days) {
   playSnd('snd_day'); 
   currentDays = days;
   const list = document.getElementById("offerList");
 
+  // স্ক্রিনের মাঝখানে আপনার ছবি এবং রিং এনিমেশন
+  list.innerHTML = `
+    <div class="loader-container">
+        <div class="ripple-ring"></div>
+        <div class="ripple-ring delay-1"></div>
+        <div class="ripple-ring delay-2"></div>
+        <div class="main-loader-img">
+            <img src="favicon.png">
+        </div>
+        <p class="loading-text">🛒অফার লোড হচ্ছে...</p>
+    </div>`;
 
-// ১. রিফ্রেশ ফিক্স: আগের ডাটা মুছে ফেলার জন্য
-list.innerHTML = '<p style="text-align:center; color:#00f2fe; padding:20px;">🛒অফার লোড হচ্ছে...</p>';
-
-database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
-    list.innerHTML = ""; // ২. ডাটা আসার পর আবার ক্লিয়ার করে ফ্রেশ ডাটা বসানো
+  database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
+    list.innerHTML = ""; 
     if (!snap.exists()) { 
         list.innerHTML = '<p style="text-align:center; color:#ff4b2b; padding:20px;">🛒দুঃখিত, কোনো অফার নেই।</p>'; 
         return; 
     }
+    
     snap.forEach(child => {
         let o = child.val();
         list.innerHTML += `
@@ -254,8 +280,10 @@ database.ref('offers/' + currentSim + '/' + days).once('value', snap => {
             <button onclick="order('${o.title.replace(/'/g, "\\'")}', '${o.price}')" style="background:linear-gradient(135deg, #ff00f1, #7aff00); color:#000; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; margin-left:10px; white-space: nowrap;">🛒কিনুন</button>
         </div>`;
     });
-});
+  });
 }
+
+
 function goBack() { playSnd('snd_back'); document.getElementById("offerSection").classList.add("hidden"); document.getElementById("homeSection").classList.remove("hidden"); 
 document.getElementById("headerTitle").innerText = "কম দামে সেরা অফার "; 
 }
@@ -264,7 +292,9 @@ document.getElementById("headerTitle").innerText = "কম দামে সে�
 function order(title, price) {
   var user = firebase.auth().currentUser;
   if (!user) { showSmartToast("📬অর্ডার করতে আগে লগইন করুন!", "⚠️", true); toggleModal(); return; }
-  playSnd('snd_buy'); tempTitle = title; tempPrice = price;
+  playSnd('snd_buy'); 
+  addToHistory();
+  tempTitle = title; tempPrice = price;
   document.getElementById('offNameText').innerText = title;
   document.getElementById('offPriceText').innerText = "দামঃ ৳ " + price;
   document.getElementById('orderModal').style.display = 'flex';
@@ -273,9 +303,120 @@ function order(title, price) {
 function closeOrder() { playSnd('snd_back'); document.getElementById('orderModal').style.display = 'none'; }
 function copyNumber() { let num = document.getElementById('paymentNumDisplay').innerText; navigator.clipboard.writeText(num).then(() => { playSnd('snd_set'); showSmartToast("কপি হয়েছে!", "📱"); }); }
 function copyUserId() { const id = document.getElementById('userIdDisplay').innerText; if(id === "লগইন করুন" || !id) return; navigator.clipboard.writeText(id).then(() => { playSnd('snd_set'); showSmartToast("আইডি কপি হয়েছে!", "🆔"); }); }
-function toggleModal() { playSnd('snd_set'); document.getElementById("settingsModal").classList.toggle("hidden"); }
-function openFullGuide() { playSnd('snd_set'); document.getElementById("fullGuidePage").classList.remove("hidden"); }
+function toggleModal() { 
+    playSnd('snd_set'); 
+    const modal = document.getElementById("settingsModal");
+    if (modal.classList.contains("hidden")) {
+        addToHistory(); // <--- এখানে যোগ করুন (শুধুমাত্র খোলার সময়)
+    }
+    modal.classList.toggle("hidden"); 
+}
+
+function openFullGuide() { 
+    playSnd('snd_set'); 
+    addToHistory(); // <--- এই লাইনটি যোগ করুন
+    document.getElementById("fullGuidePage").classList.remove("hidden"); 
+}
+
 function closeFullGuide() { playSnd('snd_back'); document.getElementById("fullGuidePage").classList.add("hidden"); }
 
 function googleLogin() { var p = new firebase.auth.GoogleAuthProvider(); firebase.auth().signInWithPopup(p).then(() => showSmartToast("লগইন সফল!", "✅")).catch(e => showSmartToast("লগইন ব্যর্থ!", "❌", true)); }
 function googleLogout() { firebase.auth().signOut().then(() => { showSmartToast("লগআউট হয়েছে", "ℹ️"); location.reload(); }); }
+/* =========================================================
+   🗑️ অর্ডার ডিলিট ফাংশন (ফায়ারবেস সিঙ্ক)
+============================================================ */
+function deleteOrder(orderKey) {
+    if (confirm("সোনা ভাই, আপনি কি সত্যিই এই অর্ডারটি লিস্ট থেকে মুছতে চান?")) {
+        // সাউন্ড বাজানো (আপনার ফাইলে snd_back আছে)
+        const s = document.getElementById('snd_back');
+        if (s) { s.currentTime = 0; s.play().catch(e => {}); }
+        
+        // ফায়ারবেস থেকে মুছে ফেলা
+        database.ref('allOrders/' + orderKey).remove()
+        .then(() => {
+            showSmartToast("অর্ডারটি মুছে ফেলা হয়েছে!", "🗑️");
+        })
+        .catch(e => {
+            showSmartToast("মুছতে সমস্যা হয়েছে!", "❌", true);
+        });
+    }
+}
+// নোটিশ বন্ধ করার ফাংশন
+function closeNotice() {
+    const modal = document.getElementById("notice-modal");
+    modal.style.opacity = "0";
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 300); // হালকা এনিমেশন দিয়ে বন্ধ হবে
+}
+const dragItem = document.querySelector("#floatingBackBtn");
+let active = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+let xOffset = 0;
+let yOffset = 0;
+
+dragItem.addEventListener("touchstart", dragStart, false);
+dragItem.addEventListener("touchend", dragEnd, false);
+dragItem.addEventListener("touchmove", drag, false);
+
+function dragStart(e) {
+    initialX = e.touches[0].clientX - xOffset;
+    initialY = e.touches[0].clientY - yOffset;
+    active = true;
+}
+
+function dragEnd(e) {
+    initialX = currentX;
+    initialY = currentY;
+    active = false;
+}
+
+function drag(e) {
+    if (active) {
+        e.preventDefault();
+        currentX = e.touches[0].clientX - initialX;
+        currentY = e.touches[0].clientY - initialY;
+        xOffset = currentX;
+        yOffset = currentY;
+        setTranslate(currentX, currentY, dragItem);
+    }
+}
+
+function setTranslate(xPos, yPos, el) {
+    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+}
+/* =========================================================
+   📱 ফোনের ফিজিক্যাল ব্যাক বাটন কন্ট্রোল (Back Button Logic)
+============================================================ */
+function addToHistory() {
+    // ব্রাউজারের ইতিহাসে একটি ফেক স্তর তৈরি করে
+    window.history.pushState({ page: "subpage" }, "");
+}
+
+window.onpopstate = function(event) {
+    // ফোনের ব্যাক বাটন টিপলে চেক করবে কোন বক্স খোলা আছে
+    const offerSection = document.getElementById("offerSection");
+    const settingsModal = document.getElementById("settingsModal");
+    const fullGuidePage = document.getElementById("fullGuidePage");
+    const orderModal = document.getElementById("orderModal");
+
+    // যদি অফার সেকশন খোলা থাকে
+    if (offerSection && !offerSection.classList.contains("hidden")) {
+        goBack();
+    } 
+    // যদি সেটিংস খোলা থাকে
+    else if (settingsModal && !settingsModal.classList.contains("hidden")) {
+        toggleModal();
+    }
+    // যদি গাইড পেজ খোলা থাকে
+    else if (fullGuidePage && !fullGuidePage.classList.contains("hidden")) {
+        closeFullGuide();
+    }
+    // যদি অর্ডার পেমেন্ট বক্স খোলা থাকে
+    else if (orderModal && orderModal.style.display === "flex") {
+        closeOrder();
+    }
+};
