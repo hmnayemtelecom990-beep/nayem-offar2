@@ -1,9 +1,9 @@
 /* =========================================================
    ১. ফন্ট রেজিস্ট্রেশন ও গ্লোবাল ডার্ক মোড
 ============================================================ */
-@font-face { font-family: 'HeaderFont'; src: url('mr2.ttf') format('truetype'); }
-@font-face { font-family: 'BodyFont'; src: url('mr2.ttf') format('truetype'); }
-@font-face { font-family: 'PriceFont'; src: url('mr3.ttf') format('truetype'); }
+@font-face { font-family: 'HeaderFont'; src: url('mr4.ttf') format('truetype'); }
+@font-face { font-family: 'BodyFont'; src: url('mr4.ttf') format('truetype'); }
+@font-face { font-family: 'PriceFont'; src: url('mr4.ttf') format('truetype'); }
 @font-face { font-family: 'ButtonFont'; src: url('mr4.ttf') format('truetype'); }
 
 body { 
